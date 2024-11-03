@@ -81,7 +81,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // Example for testing
 app.get('/', (req, res) => {
-  res.render('pages/hello_world');
+  res.render('pages/login');
 });
   
 
