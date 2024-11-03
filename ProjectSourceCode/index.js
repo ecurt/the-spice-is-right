@@ -79,9 +79,9 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // TODO - API routes here
 
-// Example for testing
+// Render home page when website is loaded
 app.get('/', (req, res) => {
-  res.render('pages/hello_world');
+  res.render('pages/recipe_results');
 });
   
 
