@@ -1,1 +1,49 @@
 {{!-- Navbar partial goes here --}}
+
+<header>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark" style="hover-color: rgb(19 79 210 / 80%);">
+        <div class="navbar-collapse collapse w-100 order-1 order-md-0 dual-collapse2">
+            <a class="navbar-brand" href="/"></a>
+            <ul class="navbar-nav mr-auto">
+                <a href="/">
+                    <img id="self-image"
+                         src="images/Fish_logo_transparent.png"
+                         width="80px" style="margin-right: 30px;"/>
+                </a>
+            </ul>
+            <form class="form-inline my-2 my-lg-0" style="width: 300px;">
+                <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search"
+                       style="border: 1.3px solid black; font-size: 1.5rem">
+            </form>
+        </div>
+
+
+        <div class="navbar-collapse collapse order-3 dual-collapse2">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href='{{#if email}}/newRecipe{{else}}/login{{/if}}'>
+                        <i class="bi bi-plus-circle-fill" style="font-size: 1.5rem; margin-right: 30px;"></i>
+                    </a>
+
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" style="font-size: 1.5rem; margin-right: 30px;"
+                       href='{{#if email}}/profile{{else}}/login{{/if}}'> {{#if email}}{{email}}{{else}}
+                        Login{{/if}} </a>
+                <li class="nav-item">
+                    {{#if email}}
+                        <a class="nav-link" href='{{#if email}}/profile{{else}}/login{{/if}}'>
+                            <i class="bi bi-person-circle" style="font-size: 1.5rem; margin-right: 30px;"></i>
+                        </a>
+                    {{/if}}
+                </li>
+            </ul>
+        </div>
+    </nav>
+</header>
+
+<style>
+    .nav-link:hover {
+        color: rgba(10, 122, 236, 0.93) !important;
+    }
+</style>
