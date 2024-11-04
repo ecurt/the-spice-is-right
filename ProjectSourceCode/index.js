@@ -108,6 +108,10 @@ app.post('/createRecipe', function (req, res) {
     res.status(500).json({ success: false, message: 'Failed to create recipe', error });
   });
 });
+
+app.get('/login', (req, res) => {
+  res.render('pages/login', {title: 'Login'});
+});
   
 app.get('/addRecipe', (req, res) => {
   res.render('pages/addRecipe');
