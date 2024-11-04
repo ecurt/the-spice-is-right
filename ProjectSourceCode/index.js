@@ -83,6 +83,10 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.get('/', (req, res) => {
   res.render('pages/hello_world');
 });
+
+app.get('/login', (req, res) => {
+  res.render('login', {title: 'Login'});
+});
   
 
 // *****************************************************
