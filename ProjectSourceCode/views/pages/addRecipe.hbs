@@ -1,0 +1,112 @@
+    <style type="text/css">
+.container {
+    display: flex;
+    width: 100%;
+    gap: 20px;
+}
+
+.left {
+    flex: 2; 
+    padding: 10px;
+    margin-left: 20px; 
+}
+
+.right {
+    flex: 3; 
+    padding: 10px;
+}
+
+  
+  label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+  }
+  
+  input[type="text"],
+  input[type="file"],
+  textarea {
+    width: 100%;
+    padding: 0.5rem;
+    font-size: 1rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  
+  button {
+    width: 100%;
+    padding: 0.75rem;
+    color: white;
+    background-color: blue;
+  }
+  
+  button:hover {
+    background-color: navy;
+  }
+</style>
+    <div class="container">
+      <div class="left">
+        <h2>Create Recipe</h2>        
+      <form action="#" method="POST">
+        <div class="form-group">
+          <label for="title">Title</label>
+          <input
+            type="text"
+            id="title"
+            name="title"
+            placeholder="Enter recipe title"
+            required
+          />
+        </div>
+        <div class="form-group">
+            <label for="steps">Description</label>
+            <textarea
+              id="steps"
+              name="steps"
+              rows="9"
+              placeholder="Provide a description for your recipe."
+              required
+            ></textarea>
+          </div>
+        <div class="form-group">
+            <label for="ingredients">Ingredients</label>
+            <textarea
+              id="ingredients"
+              name="ingredients"
+              rows="10"
+              placeholder="List ingredients"
+              required
+            ></textarea>
+          </div>
+          
+      </div>
+      <div class="right">
+
+          <div class="form-group">
+            <label for="steps">Instructions</label>
+            <textarea
+              id="steps"
+              name="steps"
+              rows="20"
+              placeholder="Describe the steps to prepare the dish"
+              required
+            ></textarea>
+          </div>
+          <div class="form-group">
+            <label for="image">Recipe Image</label>
+            <input
+              type="file"
+              id="image"
+              name="image"
+              accept="image/*"
+              required
+            />
+            
+          </div>
+          <!-- need an empty line, figure out a better way how to add one: -->
+          <br>
+
+          <button type="submit">Submit Recipe</button>
+        </form>
+      </div>
+    </div>
