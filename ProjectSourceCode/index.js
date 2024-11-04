@@ -84,6 +84,10 @@ app.get('/', (req, res) => {
   res.render('pages/hello_world');
 });
   
+app.get('/addRecipe', (req, res) => {
+  res.render('pages/addRecipe');
+});
+  
 
 // *****************************************************
 // <!-- Section 5 : Start Server-->
