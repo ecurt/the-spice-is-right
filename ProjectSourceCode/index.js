@@ -79,9 +79,38 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // TODO - API routes here
 
-// Example for testing
+// Render home page when website is loaded
 app.get('/', (req, res) => {
-  res.render('pages/hello_world');
+  res.render('pages/recipe_results');
+});
+
+// Create Recipe
+app.post('/createRecipe', function (req, res) {
+  db.task(t => {
+    const recipeQuery =
+      'INSERT INTO recipes (name, description, difficulty, time, ingredients, instructions) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *;';
+
+    // const reviewPromise = 
+    return t.one(recipeQuery, [
+      req.body.name,
+      req.body.description,
+      req.body.difficulty,
+      req.body.time,
+      req.body.ingredients,
+      req.body.instructions
+    ]);
+  })
+  .then(recipe => {
+    res.status(201).json({ success: true, recipe });
+  })
+  .catch(error => {
+    console.error('Error creating recipe:', error);
+    res.status(500).json({ success: false, message: 'Failed to create recipe', error });
+  });
+});
+
+app.get('/login', (req, res) => {
+  res.render('pages/login', {title: 'Login'});
 });
   
 app.get('/addRecipe', (req, res) => {
@@ -110,12 +139,6 @@ app.post('/register', async (req, res) => {
     }
   }
 });
-
-// Define the login route separately
-app.get('/login', (req, res) => {
-  res.render('pages/login');
-});
-
 
 // *****************************************************
 // <!-- Section 5 : Start Server-->
