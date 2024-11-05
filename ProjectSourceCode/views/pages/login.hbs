@@ -1,3 +1,43 @@
 {{> message}}
 
 {{!-- Login page here --}}
+
+<style>
+    /* Optional custom styles for the login page */
+    .login-container {
+      max-width: 400px; /* Maximum width of the login form */
+      padding: 30px; /* Padding around the form */
+      background-color: #ffffff; /* Background color */
+      border-radius: 8px; /* Rounded corners */
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+      text-align: center; /* Center text within the form */
+    }
+  </style>
+
+<div class="container-fluid vh-100 d-flex justify-content-center align-items-center">
+<div class="form-container">
+<h1 class="display-4 mb-4">Login</h1>
+
+<form action="/login" method="POST">
+  <div class="form-group">
+    <label for="username">Username:</label>
+    <input type="text" class="form-control mb-3" id="username" name="username" required>
+  </div>
+  <div>
+    <label for="password">Password:</label>
+    <input type="password" class="form-control mb-3" id="password" name="password" required
+    pattern="(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%^&*])[A-Za-z\d!@#$%^&*]{12,}"
+    title="Password must at least include 12 characters and include one uppercase letter, one number and one symbol.">
+  </div>
+  <div class="text-center">
+  <button type="submit" class="btn btn-primary btn-block">Login</button>
+  </div>
+  </form>
+  <div class="text-center">
+  <p>
+    <a href="/register">Create Account</a>
+  </p>
+  </div>
+
+</div>
+</div>
