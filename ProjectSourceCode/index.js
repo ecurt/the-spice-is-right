@@ -87,6 +87,9 @@ app.get('/', (req, res) => {
 app.get('/addRecipe', (req, res) => {
   res.render('pages/addRecipe');
 });
+app.get('/viewRecipe', (req, res) => {
+  res.render('pages/viewRecipe');
+});
   
 
 // *****************************************************
