@@ -73,6 +73,15 @@ app.use(
 // Serve static files from the "public" directory
 app.use(express.static(path.join(__dirname, 'public')));
 
+// Authentication Middleware.
+const auth = (req, res, next) => {
+  if (!req.session.user) {
+    // Default to login page.
+    return res.redirect('/login');
+  }
+  next();
+};
+
 // *****************************************************
 // <!-- Section 4 : API Routes -->
 // *****************************************************
@@ -85,7 +94,7 @@ app.get('/', (req, res) => {
 });
 
 // Create Recipe
-app.post('/createRecipe', function (req, res) {
+app.post('/addRecipe', auth, function (req, res) {
   db.task(t => {
     const recipeQuery =
       'INSERT INTO recipes (name, description, difficulty, time, ingredients, instructions) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *;';
@@ -107,14 +116,39 @@ app.post('/createRecipe', function (req, res) {
     console.error('Error creating recipe:', error);
     res.status(500).json({ success: false, message: 'Failed to create recipe', error });
   });
+
+  // Eventually add owner to recipe in the recipe_owner table
+
+});
+  
+app.get('/addRecipe', auth, (req, res) => {
+  res.render('pages/addRecipe');
 });
 
 app.get('/login', (req, res) => {
   res.render('pages/login', {title: 'Login'});
 });
-  
-app.get('/addRecipe', (req, res) => {
-  res.render('pages/addRecipe');
+
+app.post('/login', async (req, res) => {
+
+  db.one('SELECT * FROM users WHERE username = $1 ;', [req.body.username])
+  .then(async user => {
+    const match = await bcrypt.compare(req.body.password, user.password);
+    if (match) {
+      // Login
+      req.session.user = user.username;
+      req.session.save();
+      res.redirect('/');
+    }
+    else {
+      // Error
+      res.render('pages/login', {message: 'Incorrect password. Try again.',});
+    }
+  })
+  .catch(err => {
+    console.log(err);
+    res.redirect('/register');
+  });
 });
 
 app.get('/register', (req, res) => {
