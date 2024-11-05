@@ -117,6 +117,28 @@ app.get('/addRecipe', (req, res) => {
   res.render('pages/addRecipe');
 });
 
+app.get('/register', (req, res) => {
+  res.render('pages/register');
+});
+
+app.post('/register', async (req, res) => {
+  try {
+    const hashedPassword = await bcrypt.hash(req.body.password, 10);
+    await db.none(
+      'INSERT INTO users (username, password) VALUES ($1, $2)',
+      [req.body.username, hashedPassword]
+    );
+    res.redirect('/login'); // Redirects to login page after successful registration
+  } catch (error) {
+    if (error.code === '23505') {
+      console.error('Username already exists');
+      res.render('pages/register', { message: 'Username already exists. Please choose another.' });
+    } else {
+      console.error('Registration error:', error);
+      res.render('pages/register', { message: 'Registration failed. Please try again.' });
+    }
+  }
+});
 
 // *****************************************************
 // <!-- Section 5 : Start Server-->
