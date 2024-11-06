@@ -90,7 +90,9 @@ const auth = (req, res, next) => {
 
 // Render home page when website is loaded
 app.get('/', (req, res) => {
-  res.render('pages/recipe_results');
+  res.render('pages/recipe_results',{
+    username: req.session.user ? req.session.user.username : null
+  });
 });
 
 // Create Recipe
@@ -136,7 +138,7 @@ app.post('/login', async (req, res) => {
     const match = await bcrypt.compare(req.body.password, user.password);
     if (match) {
       // Login
-      req.session.user = user.username;
+      req.session.user = user;
       req.session.save();
       res.redirect('/');
     }
@@ -172,6 +174,11 @@ app.post('/register', async (req, res) => {
       res.render('pages/register', { message: 'Registration failed. Please try again.' });
     }
   }
+});
+
+app.get('/logout', (req, res) => {
+  req.session.destroy();
+  res.render('pages/logout');
 });
 
 // *****************************************************

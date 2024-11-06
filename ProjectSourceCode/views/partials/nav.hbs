@@ -11,9 +11,9 @@
                          width="80px" style="margin-right: 30px;"/>
                 </a>
             </ul>
-            <form class="form-inline my-2 my-lg-0" style="width: 300px;">
-                <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search"
-                       style="border: 1.3px solid black; font-size: 1.5rem">
+            <form class="d-flex my-2 my-lg-0" style="position: relative; width: 300px;">
+                <input class="form-control" type="search" placeholder="Search" aria-label="Search" style="padding-left: 2.5rem; font-size: 1.5rem;">
+                <i class="bi bi-search" style="position: absolute; top: 50%; left: 10px; transform: translateY(-50%); font-size: 1.2rem; color: gray;"></i>
             </form>
         </div>
 
@@ -26,17 +26,27 @@
                     </a>
 
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" style="font-size: 1.5rem; margin-right: 30px;"
-                       href='{{#if email}}/profile{{else}}/login{{/if}}'> {{#if email}}{{email}}{{else}}
-                        Login{{/if}} </a>
-                <li class="nav-item">
-                    {{#if email}}
-                        <a class="nav-link" href='{{#if email}}/profile{{else}}/login{{/if}}'>
-                            <i class="bi bi-person-circle" style="font-size: 1.5rem; margin-right: 30px;"></i>
+
+                {{#if username}}
+                    <li class="nav-item">
+                        <a class="nav-link d-flex align-items-center" href="/profile" style="font-size: 1.5rem; margin-right: 30px;">
+                            <i class="bi bi-person-circle" style="font-size: 1.5rem; margin-right: 10px;"></i>
+                            <span>{{username}}</span>
                         </a>
-                    {{/if}}
+                    </li>
+                    <li class="nav-item d-flex align-items-center" style="font-size: 1.5rem; margin-right: 30px;">
+                    <a class="nav-link" href='/logout'>
+                        <i class="bi bi-box-arrow-right" style="font-size: 1.5rem; margin-right: 3px;"></i>
+                        <span>Logout</span>
+                    </a>
                 </li>
+                {{else}}
+                    <li class="nav-item">
+                        <a class="nav-link d-flex align-items-center" href="/login" style="font-size: 1.5rem; margin-right: 30px;">
+                            <span>Login</span>
+                        </a>
+                    </li>
+                {{/if}}
             </ul>
         </div>
     </nav>
@@ -45,5 +55,8 @@
 <style>
     .nav-link:hover {
         color: rgba(10, 122, 236, 0.93) !important;
+    }
+    .nav-link {
+        white-space: nowrap;
     }
 </style>
