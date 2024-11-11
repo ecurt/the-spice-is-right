@@ -73,21 +73,113 @@ app.use(
 // Serve static files from the "public" directory
 app.use(express.static(path.join(__dirname, 'public')));
 
+// Authentication Middleware.
+const auth = (req, res, next) => {
+  if (!req.session.user) {
+    // Default to login page.
+    return res.redirect('/login');
+  }
+  next();
+};
+
 // *****************************************************
 // <!-- Section 4 : API Routes -->
 // *****************************************************
 
 // TODO - API routes here
 
-// Example for testing
+// Render home page when website is loaded
 app.get('/', (req, res) => {
-  res.render('pages/hello_world');
+  res.render('pages/recipe_results',{
+    username: req.session.user ? req.session.user.username : null
+  });
+});
+
+// Create Recipe
+app.post('/addRecipe', auth, function (req, res) {
+  db.task(t => {
+    const recipeQuery =
+      'INSERT INTO recipes (name, description, difficulty, time, ingredients, instructions) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *;';
+
+    // const reviewPromise = 
+    return t.one(recipeQuery, [
+      req.body.name,
+      req.body.description,
+      req.body.difficulty,
+      req.body.time,
+      req.body.ingredients,
+      req.body.instructions
+    ]);
+  })
+  .then(recipe => {
+    res.status(201).json({ success: true, recipe });
+  })
+  .catch(error => {
+    console.error('Error creating recipe:', error);
+    res.status(500).json({ success: false, message: 'Failed to create recipe', error });
+  });
+
+  // Eventually add owner to recipe in the recipe_owner table
+
+});
+  
+app.get('/addRecipe', auth, (req, res) => {
+  res.render('pages/addRecipe');
 });
 
 app.get('/login', (req, res) => {
   res.render('pages/login', {title: 'Login'});
 });
-  
+
+app.post('/login', async (req, res) => {
+
+  db.one('SELECT * FROM users WHERE username = $1 ;', [req.body.username])
+  .then(async user => {
+    const match = await bcrypt.compare(req.body.password, user.password);
+    if (match) {
+      // Login
+      req.session.user = user;
+      req.session.save();
+      res.redirect('/');
+    }
+    else {
+      // Error
+      res.render('pages/login', {message: 'Incorrect password. Try again.',});
+    }
+  })
+  .catch(err => {
+    console.log(err);
+    res.redirect('/register');
+  });
+});
+
+app.get('/register', (req, res) => {
+  res.render('pages/register');
+});
+
+app.post('/register', async (req, res) => {
+  try {
+    const hashedPassword = await bcrypt.hash(req.body.password, 10);
+    await db.none(
+      'INSERT INTO users (username, password) VALUES ($1, $2)',
+      [req.body.username, hashedPassword]
+    );
+    res.redirect('/login'); // Redirects to login page after successful registration
+  } catch (error) {
+    if (error.code === '23505') {
+      console.error('Username already exists');
+      res.render('pages/register', { message: 'Username already exists. Please choose another.' });
+    } else {
+      console.error('Registration error:', error);
+      res.render('pages/register', { message: 'Registration failed. Please try again.' });
+    }
+  }
+});
+
+app.get('/logout', (req, res) => {
+  req.session.destroy();
+  res.render('pages/logout');
+});
 
 // *****************************************************
 // <!-- Section 5 : Start Server-->
