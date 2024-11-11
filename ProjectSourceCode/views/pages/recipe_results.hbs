@@ -2,9 +2,20 @@
 It is the default page and also will display the results to a search.
 We could even make this page show the recipes in each cookbook.
 We could also change the name, I just put recipe_results for now --}}
-{{> head}}
+
+{{> message}}
+
+<div class="mx-auto">
+<h1 class="mt-3">{{title}}</h1>
+</div>
+
+{{!-- Read this: --}}
+{{!-- To test that my code was passing to handlebars properly, I made this quickly. Your version is just 3 of these cards. --}}
+{{!-- All of the cards appear on the same row but that was an easy fix on lab 8 (discovery page) --}}
+
 <div class="card-group">
-    <div id="hobby-card-1" class="card">
+    {{#each data}}
+    <div class="card">
         {{!-- placeholder image area --}}
         <div id="placeholder-img-box" style="height: 200px; background-color: powderblue; position: relative;">
             {{!-- like button placeholder --}}
@@ -13,69 +24,23 @@ We could also change the name, I just put recipe_results for now --}}
         </div>
         <div class="card-body">
             <div class="card-title" style="display: flex; justify-content: space-between; align-items: center;">
-                <h5>Recipe Name</h5>
-                <span style="font-size: 14px; color: gray;">Difficulty: ★★★☆☆</span>
+                <h5>{{this.name}}</h5>
+                <span style="font-size: 14px; color: gray;">Difficulty: {{this.difficulty}}</span>
+                {{!-- ★★★☆☆  --}}
+                {{!-- Put this in a comment in case you wanna do some logic to render it properly --}}
 
             </div>
             <div class="card-desc" style="display: flex; justify-content: space-between; align-items: center;">
-                <p class="card-text">Recipe Description</p>
-                <span style="font-size: 14px; color: gray;">Cook Time: 1h30m</span>
+                <p class="card-text">{{this.description}}</p>
+                <span style="font-size: 14px; color: gray;">Cook Time: {{this.time}}</span>
             </div>
 
-            <div class="Allergens" style="display: flex; justify-content: space-between; align-items: center;">
+            {{!-- <div class="Allergens" style="display: flex; justify-content: space-between; align-items: center;">
                 <p class="card-text">Allergens:</p>
                 <span style="font-size: 14px; color: gray;">Nuts, Fish</span>
-            </div>
+            </div> --}}
         </div>
     </div>
-    <div id="hobby-card-1" class="card">
-        {{!-- placeholder image area --}}
-        <div id="placeholder-img-box" style="height: 200px; background-color: powderblue; position: relative;">
-            {{!-- like button placeholder --}}
-            <div style="width: 50px; height: 50px; background-color: red; position: absolute; bottom: 0; right: 0;">
-            </div>
-        </div>
-        <div class="card-body">
-            <div class="card-title" style="display: flex; justify-content: space-between; align-items: center;">
-                <h5>Recipe Name</h5>
-                <span style="font-size: 14px; color: gray;">Difficulty: ★★★☆☆</span>
-
-            </div>
-            <div class="card-desc" style="display: flex; justify-content: space-between; align-items: center;">
-                <p class="card-text">Recipe Description</p>
-                <span style="font-size: 14px; color: gray;">Cook Time: 1h30m</span>
-            </div>
-
-            <div class="Allergens" style="display: flex; justify-content: space-between; align-items: center;">
-                <p class="card-text">Allergens:</p>
-                <span style="font-size: 14px; color: gray;">Nuts, Fish</span>
-            </div>
-        </div>
-    </div>
-
-    <div id="hobby-card-1" class="card">
-        {{!-- placeholder image area --}}
-        <div id="placeholder-img-box" style="height: 200px; background-color: powderblue; position: relative;">
-            {{!-- like button placeholder --}}
-            <div style="width: 50px; height: 50px; background-color: red; position: absolute; bottom: 0; right: 0;">
-            </div>
-        </div>
-        <div class="card-body">
-            <div class="card-title" style="display: flex; justify-content: space-between; align-items: center;">
-                <h5>Recipe Name</h5>
-                <span style="font-size: 14px; color: gray;">Difficulty: ★★★☆☆</span>
-
-            </div>
-            <div class="card-desc" style="display: flex; justify-content: space-between; align-items: center;">
-                <p class="card-text">Recipe Description</p>
-                <span style="font-size: 14px; color: gray;">Cook Time: 1h30m</span>
-            </div>
-
-            <div class="Allergens" style="display: flex; justify-content: space-between; align-items: center;">
-                <p class="card-text">Allergens:</p>
-                <span style="font-size: 14px; color: gray;">Nuts, Fish</span>
-            </div>
-        </div>
-    </div>
+    {{/each}}
 </div>
 {{> footer}}
