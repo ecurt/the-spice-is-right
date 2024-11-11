@@ -112,7 +112,8 @@ app.post('/addRecipe', auth, function (req, res) {
     ]);
   })
   .then(recipe => {
-    res.status(201).json({ success: true, recipe });
+    res.render('pages/recipe_results', {title: 'Succesfully created recipe',});
+    // res.status(201).json({ success: true, recipe });
   })
   .catch(error => {
     console.error('Error creating recipe:', error);
@@ -124,7 +125,27 @@ app.post('/addRecipe', auth, function (req, res) {
 });
   
 app.get('/addRecipe', auth, (req, res) => {
-  res.render('pages/addRecipe');
+  res.render('pages/add_recipe');
+});
+
+
+// Search recipes
+app.get('/search', function (req, res) {
+  const query = 'SELECT name, difficulty, time FROM recipes WHERE name LIKE $1';
+  db.any(query, [`%${req.query.search}%`])
+  .then(data => {
+    const title = `Search results for \'${req.query.search}\':`;
+    console.log(data); // For debugging
+    res.render('pages/recipe_results', {
+      title: title,
+      data: data
+    });
+  })
+  .catch(error => {
+    console.error('Error searching database: ', error);
+    res.status(500).json({ success: false, message: 'Error searching database', error });
+  });
+
 });
 
 app.get('/login', (req, res) => {
