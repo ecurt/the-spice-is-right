@@ -91,6 +91,7 @@ const auth = (req, res, next) => {
 // Render home page when website is loaded
 app.get('/', (req, res) => {
   res.render('pages/recipe_results',{
+    title: 'Home',
     username: req.session.user ? req.session.user.username : null
   });
 });
@@ -131,7 +132,7 @@ app.get('/addRecipe', auth, (req, res) => {
 
 // Search recipes
 app.get('/search', function (req, res) {
-  const query = 'SELECT name, difficulty, time FROM recipes WHERE name LIKE $1';
+  const query = 'SELECT name, description, difficulty, time FROM recipes WHERE name LIKE $1';
   db.any(query, [`%${req.query.search}%`])
   .then(data => {
     const title = `Search results for \'${req.query.search}\':`;
