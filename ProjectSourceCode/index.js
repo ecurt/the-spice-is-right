@@ -136,7 +136,7 @@ app.get('/search', function (req, res) {
   db.any(query, [`%${req.query.search}%`])
   .then(data => {
     const title = `Search results for \'${req.query.search}\':`;
-    console.log(data); // For debugging
+    // console.log(data); // For debugging
     res.render('pages/recipe_results', {
       title: title,
       data: data
