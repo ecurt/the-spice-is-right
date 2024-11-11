@@ -17,16 +17,8 @@
             </form>
         </div>
 
-
         <div class="navbar-collapse collapse order-3 dual-collapse2">
             <ul class="navbar-nav ml-auto">
-                <li class="nav-item">
-                    <a class="nav-link" href='/addRecipe'>
-                        <i class="bi bi-plus-circle-fill" style="font-size: 1.5rem; margin-right: 30px;"></i>
-                    </a>
-
-                </li>
-
                 {{#if username}}
                     <li class="nav-item">
                         <a class="nav-link d-flex align-items-center" href="/profile" style="font-size: 1.5rem; margin-right: 30px;">
@@ -34,12 +26,21 @@
                             <span>{{username}}</span>
                         </a>
                     </li>
-                    <li class="nav-item d-flex align-items-center" style="font-size: 1.5rem; margin-right: 30px;">
-                    <a class="nav-link" href='/logout'>
-                        <i class="bi bi-box-arrow-right" style="font-size: 1.5rem; margin-right: 3px;"></i>
-                        <span>Logout</span>
+                {{/if}}
+
+                <li class="nav-item">
+                    <a class="nav-link" href='/addRecipe'>
+                        <i class="bi bi-plus-circle-fill" style="font-size: 1.5rem; margin-right: 30px;"></i>
                     </a>
                 </li>
+
+                {{#if username}}
+                    <li class="nav-item d-flex align-items-center" style="font-size: 1.5rem; margin-right: 30px;">
+                        <a class="nav-link" href='/logout'>
+                            <i class="bi bi-box-arrow-right" style="font-size: 1.5rem; margin-right: 3px;"></i>
+                            <span>Logout</span>
+                        </a>
+                    </li>
                 {{else}}
                     <li class="nav-item">
                         <a class="nav-link d-flex align-items-center" href="/login" style="font-size: 1.5rem; margin-right: 30px;">

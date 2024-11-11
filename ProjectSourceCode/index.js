@@ -203,6 +203,27 @@ app.get('/logout', (req, res) => {
   res.render('pages/logout');
 });
 
+app.get('/profile', auth, async (req, res) => {
+  try {
+    const userId = req.session.user.user_id;
+    const user = await db.one('SELECT username FROM users WHERE user_id = $1', [userId]);
+    const userRecipes = await db.any(
+      'SELECT recipe_id, name, description FROM recipes WHERE recipe_id IN (SELECT recipe_id FROM recipe_owners WHERE user_id = $1)',
+      [userId]
+    );
+
+    res.render('pages/profile', {
+      title: 'User Profile',
+      user: user,
+      recipes: userRecipes,
+    });
+  } catch (error) {
+    console.error('Error fetching user profile:', error);
+    res.status(500).send('An error occurred while loading the profile page');
+  }
+});
+
+
 // *****************************************************
 // <!-- Section 5 : Start Server-->
 // *****************************************************
