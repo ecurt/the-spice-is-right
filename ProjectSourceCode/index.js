@@ -106,19 +106,21 @@ app.post('/addRecipe', auth, function (req, res) {
             'INSERT INTO recipes (name, description, difficulty, time, ingredients, instructions) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *;';
 
         // const reviewPromise =
-        return t.one(recipeQuery, [
+        const recipe = await t.one(recipeQuery, [
             req.body.name,
             req.body.description,
             req.body.difficulty,
             req.body.time,
             req.body.ingredients,
             req.body.instructions
-        ])
+        ]);
 
         await t.none(
-            'INSERT INTO recipe_owners (user_id, recipe_id) VALUES ($1, $2) RETURNING *;',
+            'INSERT INTO recipe_owners (user_id, recipe_id) VALUES ($1, $2);',
             [req.session.user.user_id, recipe.recipe_id]
         );
+
+        return recipe;
     })
         .then(recipe => {
             res.render('pages/recipe_results', {title: 'Succesfully created recipe',});
