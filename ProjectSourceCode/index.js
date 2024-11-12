@@ -129,6 +129,11 @@ app.get('/addRecipe', auth, (req, res) => {
   res.render('pages/add_recipe');
 });
 
+app.get('/viewRecipe',(req, res) => {
+  res.render('pages/view_recipe');
+});
+
+
 
 // Search recipes
 app.get('/search', function (req, res) {

@@ -5,24 +5,27 @@
     gap: 20px;
 }
 
+
 .left {
-    flex: 2; 
+    flex: 2;
     padding: 10px;
-    margin-left: 20px; 
+    margin-left: 20px;
 }
+
 
 .right {
-    flex: 3; 
+    flex: 3;
     padding: 10px;
 }
 
-  
+
+ 
   label {
     display: block;
     font-weight: bold;
     margin-bottom: 0.5rem;
   }
-  
+ 
   input[type="text"],
   input[type="file"],
   textarea {
@@ -32,18 +35,19 @@
     border: 1px solid #ccc;
     border-radius: 4px;
   }
-  
+ 
   button {
     width: 100%;
     padding: 0.75rem;
     color: white;
     background-color: blue;
   }
-  
+ 
   button:hover {
     background-color: navy;
   }
 </style>
+
 
     <div class="container">
       <div class="left">
@@ -74,21 +78,22 @@
             <textarea
               id="ingredients"
               name="ingredients"
-              rows="10"
+              rows="14"
               placeholder="List ingredients"
               required
             ></textarea>
           </div>
-          
+         
       </div>
       <div class="right">
+
 
           <div class="form-group">
             <label for="steps">Instructions</label>
             <textarea
               id="steps"
               name="instructions"
-              rows="20"
+              rows="15"
               placeholder="Describe the steps to prepare the dish"
               required
             ></textarea>
@@ -103,10 +108,11 @@
               {{!-- required --}}
               {{!-- I commented this out for now so that it is easier to test, add this back when we implement images. Or leave it if images are optional  --}}
             />
-            
+           
           </div>
           <!-- need an empty line, figure out a better way how to add one: -->
           <br>
+
 
           {{!-- Start of new form groups (that Evan created) --}}
           <div class="form-group">
@@ -119,6 +125,8 @@
               required
             />
           </div>
+          <br>
+
 
           <div class="form-group">
             <label for="time">Time</label>
@@ -130,10 +138,15 @@
               required
             />
           </div>
+                    <br>
+
+
           {{!-- End of new form groups --}}
           {{!-- Also find a way to verify time is an int in both frontend and backend --}}
+
 
           <button type="submit">Submit Recipe</button>
         </form>
       </div>
     </div>
+
