@@ -228,6 +228,63 @@ app.get('/profile', auth, async (req, res) => {
 });
 
 
+// Get cookbooks
+app.get('/myCookbooks', auth, async (req, res) => {
+    try {
+      const userId = req.session.user.user_id;
+      const data = await db.any(
+        'SELECT c.name FROM cookbook_owners co INNER JOIN cookbooks c ON co.cookbook_id = c.cookbook_id WHERE co.user_id = $1;',
+        [userId]
+      );
+  
+      res.render('pages/my_cookbooks', {
+        data: data
+      });
+    } catch (error) {
+      console.error('Error finding cookbooks: ', error);
+      res.status(500).send('An error occurred while loading the cookbooks');
+    }
+});
+
+
+// Load a cookbook
+app.get('/cookbook', auth, async (req, res) => {
+    try {
+
+      // Make sure user owns the cookbook first:
+      const userId = req.session.user.user_id;
+      const owner = await db.one(
+        'SELECT user_id FROM cookbook_owners WHERE cookbook_id = $1;',
+        [req.query.cookbookId]
+      );
+      if (userId != owner) {
+        return res.status(404).send('Cookbook not found.');
+      }
+
+      // Get cookbook name
+      const cookbookName = db.one('SELECT name FROM cookbooks WHERE cookbook_id = $1;', [req.query.cookbookId]);
+
+      // Get recipes in the cookbook and display it to the user
+      const query = 'SELECT name, description, difficulty, time FROM \
+      cookbooks c INNER JOIN saved_recipes sr ON cookbooks.cookbook_id = saved_recipes.cookbook_id \
+      INNER JOIN recipes r ON sr.recipe_id = r.recipe_id \
+      WHERE c.cookbook_id = $1;';
+      const data = await db.any(query, [req.query.cookbookId]);
+  
+      res.render('pages/recipe_results', {
+        title: cookbookName,
+        data: data
+      });
+
+    } catch (error) {
+      console.error('Error finding cookbooks: ', error);
+      res.status(500).send('An error occurred while loading the cookbooks');
+    }
+});
+
+
+
+
 // *****************************************************
 // <!-- Section 5 : Start Server-->
 // *****************************************************
