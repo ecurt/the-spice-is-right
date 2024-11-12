@@ -116,10 +116,6 @@ app.post('/addRecipe', auth, function (req, res) {
             'INSERT INTO recipe_owners (user_id, recipe_id) VALUES ($1, $2) RETURNING *;',
             [req.session.user.user_id, recipe.recipe_id]
         );
-            // .then(recipe => {
-            //     const ownerQuery = `INSERT INTO recipe_owners (user_id, recipe_id) VALUES ($1, $2) RETURNING *;`;
-            //     return t.one(ownerQuery, [ req.session.user.user_id, recipe.recipe_id]);
-            // });
     })
         .then(recipe => {
             res.render('pages/recipe_results', {title: 'Succesfully created recipe',});
@@ -129,9 +125,6 @@ app.post('/addRecipe', auth, function (req, res) {
             console.error('Error creating recipe:', error);
             res.status(500).json({success: false, message: 'Failed to create recipe', error});
         });
-
-    // Eventually add owner to recipe in the recipe_owner table
-
 });
 
 app.get('/addRecipe', auth, (req, res) => {
