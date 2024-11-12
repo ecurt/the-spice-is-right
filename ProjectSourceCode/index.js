@@ -49,6 +49,7 @@ db.connect()
 // <!-- Section 3 : App Settings -->
 // *****************************************************
 
+
 // Register `hbs` as our view engine using its bound `engine()` function.
 app.engine('hbs', hbs.engine);
 app.set('view engine', 'hbs');
@@ -236,3 +237,21 @@ docker compose up -d
 docker exec -it projectsourcecode-db-1 /bin/bash
 psql -U postgres -d users_db
 */
+
+
+// Handlebars helper functions
+
+// Formats time for recipes
+Handlebars.registerHelper('formatTime', function(minutes) {
+    if (minutes < 60) {
+        return `${minutes} min`;
+    } else {
+        const hours = Math.floor(minutes / 60);
+        const remainingMinutes = minutes % 60;
+        return `${hours} hr ${remainingMinutes > 0 ? remainingMinutes + ' min' : ''}`;
+    }
+});
+
+Handlebars.registerHelper('isMod3', function(index) {
+    return index % 3 === 0;
+});
