@@ -87,12 +87,14 @@ const auth = (req, res, next) => {
 // *****************************************************
 
 // TODO - API routes here
-
+app.use((req,res,next) => {
+    res.locals.username = req.session.user ? req.session.user.username : null;
+    next();
+});
 // Render home page when website is loaded
 app.get('/', (req, res) => {
     res.render('pages/recipe_results', {
-        title: 'Home',
-        username: req.session.user ? req.session.user.username : null
+        title: 'Home'
     });
 });
 
