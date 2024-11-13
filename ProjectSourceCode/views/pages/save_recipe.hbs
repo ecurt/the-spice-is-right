@@ -1,0 +1,25 @@
+
+<div class="container mt-5">
+	<div class="row justify-content-center">
+		<div class="col-md-6">
+			<div class="card shadow">
+				<div class="card-body">
+					<h3 class="card-title text-center">Save "{{recipeName}}" under which cookbook?</h3>
+					<form action="/saveRecipe" method="POST">
+						<input name="recipeID" type="hidden" value="{{recipeId}}">
+						<div class="form-group mb-3">
+							<label for="select">Choose a cookbook</label>
+							<select class="form-control" id="select" name="cookbookId" required>
+								<option value="" disabled selected>Select...</option>
+								{{#each data}}
+								<option value="{{this.cookbook_id}}">{{this.name}}</option>
+								{{/each}}
+							</select>
+						</div>
+						<button type="submit" class="btn btn-primary w-100">Save to Cookbook</button>
+					</form>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
