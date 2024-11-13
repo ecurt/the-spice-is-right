@@ -161,6 +161,10 @@ app.get('/login', (req, res) => {
 });
 
 app.post('/login', async (req, res) => {
+  if (typeof req.body.username !== 'string' || req.body.username.trim() === '') {
+    console.error('Invalid username input');
+    return res.status(400).json({ message: 'Invalid input' });
+  }
 
     db.one('SELECT * FROM users WHERE username = $1 ;', [req.body.username])
         .then(async user => {
@@ -171,7 +175,6 @@ app.post('/login', async (req, res) => {
                 req.session.save();
                 res.redirect('/');
             } else {
-                // Error
                 res.render('pages/login', {message: 'Incorrect password. Try again.',});
             }
         })
@@ -186,23 +189,35 @@ app.get('/register', (req, res) => {
 });
 
 app.post('/register', async (req, res) => {
-    try {
-        const hashedPassword = await bcrypt.hash(req.body.password, 10);
-        await db.none(
-            'INSERT INTO users (username, password) VALUES ($1, $2)',
-            [req.body.username, hashedPassword]
-        );
-        res.redirect('/login'); // Redirects to login page after successful registration
-    } catch (error) {
-        if (error.code === '23505') {
-            console.error('Username already exists');
-            res.render('pages/register', {message: 'Username already exists. Please choose another.'});
-        } else {
-            console.error('Registration error:', error);
-            res.render('pages/register', {message: 'Registration failed. Please try again.'});
-        }
-    }
+  const { username, password } = req.body;
+
+  if (typeof username !== 'string' || username.trim() === '') {
+    console.error('Invalid username input');
+    return res.status(400).json({ message: 'Invalid input' });
+  }
+
+  console.log('Username:', username);
+  console.log('Password:', password);
+
+  try {
+      const hashedPassword = await bcrypt.hash(password, 10);
+      console.log('Hashed Password:', hashedPassword);
+      await db.none(
+          'INSERT INTO users (username, password) VALUES ($1, $2)',
+          [username, hashedPassword]
+      );
+      res.redirect('/login')
+  } catch (error) {
+      console.error('Registration error:', error);
+      if (error.code === '23505') {
+          console.error('Username already exists');
+          res.status(409).json({message: 'Username already exists. Please choose another.'});
+      } else {
+          res.status(400).json({message: 'Registration failed. Please try again.'});
+      }
+  }
 });
+
 
 app.get('/logout', (req, res) => {
     req.session.destroy();

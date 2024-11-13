@@ -30,3 +30,55 @@ describe('Server!', () => {
 // *********************** TODO: WRITE 2 UNIT TESTCASES **************************
 
 // ********************************************************************************
+//TEST CASE FOR REGISTER
+describe('Testing Add User API', () => {
+    it('positive : /register', done => {
+      chai
+        .request(server)
+        .post('/register')
+        .send({username: 'Nine Critchepon Chuenchit', password: 'Anushi20040925!!'})
+        .end((err, res) => {
+          expect(res).to.have.status(200);
+          done();
+        });
+    });
+    
+    it('Negative : /register. Checking invalid name', done => {
+        chai
+          .request(server)
+          .post('/register')
+          .send({username: 10, password: 'Anushi20040925!!'})
+          .end((err, res) => {
+            expect(res).to.have.status(400);
+            expect(res.body.message).to.equals('Invalid input');
+            done();
+          });
+    });
+  });
+//TEST ON LOGIN!!
+  describe('Testing Login User API', () => {
+    it('positive : /login', done => {
+      chai
+        .request(server)
+        .post('/login')
+        .send({username: 'Nine Critchepon Chuenchit', password: 'Anushi20040925!!'})
+        .end((err, res) => {
+          expect(res).to.have.status(200);
+          //expect(res.body.message).to.equals('Success');
+          done();
+        });
+    });
+    
+    it('Negative : /login. Checking invalid name', done => {
+        chai
+          .request(server)
+          .post('/login')
+          .send({username: 10, password: 'Anushi20040925!!'}) //db error expected due to username being 10, don't panic
+          .end((err, res) => {
+            expect(res).to.have.status(400);
+            expect(res.body.message).to.equals('Invalid input');
+            done();
+          });
+    });
+  });
+
