@@ -306,6 +306,12 @@ app.get('/cookbook', auth, async (req, res) => {
 });
 
 
+// For testing
+app.get('/welcome', (req, res) => {
+    res.json({status: 'success', message: 'Welcome!'});
+  });
+
+
 // Cookbook post
 // Expects name perameter
 app.post('/cookbook', auth, function (req, res) {
