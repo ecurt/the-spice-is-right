@@ -98,8 +98,6 @@ app.get('/', (req, res) => {
   const query = 'SELECT name, description, difficulty, time FROM recipes';
   db.any(query, [`%${req.query.search}%`])
     .then(data => {
-      const title = `HOME`;
-      // console.log(data); // For debugging
       res.render('pages/recipe_results', {
         data: data
       });
