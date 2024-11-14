@@ -181,25 +181,7 @@ app.get('/logout', (req, res) => {
   res.render('pages/logout');
 });
 
-app.post('/cookbook', async (req, res) => {
-  try {
-    const { title, description, recipes } = req.body;
-    if (!title) {
-      return res.status(400).json({ error: 'Title is required' });
-    }
-    if (!Array.isArray(recipes)) {
-      return res.status(400).json({ error: 'Recipes should be an array' });
-    }
-    const newCookbook = await Cookbook.create({
-      title,
-      description,
-      recipes,
-    });
-    res.status(201).json(newCookbook);
-  } catch (error) {
-    res.status(500).json({ error: 'Failed to create cookbook' });
-  }
-});
+
 
 // *****************************************************
 // <!-- Section 5 : Start Server-->
