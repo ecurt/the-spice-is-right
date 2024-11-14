@@ -92,11 +92,22 @@ app.use((req,res,next) => {
     res.locals.username = req.session.user ? req.session.user.username : null;
     next();
 });
+
 // Render home page when website is loaded
 app.get('/', (req, res) => {
-    res.render('pages/recipe_results', {
-        title: 'Home'
-    });
+  const query = 'SELECT name, description, difficulty, time FROM recipes';
+    db.any(query, [`%${req.query.search}%`])
+        .then(data => {
+            const title = `HOME`;
+            // console.log(data); // For debugging
+            res.render('pages/recipe_results', {
+                data: data
+            });
+        })
+        .catch(error => {
+            console.error('Error searching database: ', error);
+            res.status(500).json({success: false, message: 'Error searching database', error});
+        });
 });
 
 // Create Recipe
@@ -137,7 +148,6 @@ app.post('/addRecipe', auth, function (req, res) {
 app.get('/viewRecipe',(req, res) => {
   res.render('pages/view_recipe');
 });
-
 
 
 app.get('/addRecipe', auth, (req, res) => {
