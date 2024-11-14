@@ -132,12 +132,15 @@ app.post('/addRecipe', auth, function (req, res) {
         });
 });
 
+
+
 app.get('/addRecipe', auth, (req, res) => {
     res.render('pages/add_recipe');
 });
 
 
 // Search recipes
+// Expects 'search' query perameter
 app.get('/search', function (req, res) {
     const query = 'SELECT name, description, difficulty, time FROM recipes WHERE name LIKE $1';
     db.any(query, [`%${req.query.search}%`])
@@ -224,6 +227,8 @@ app.get('/logout', (req, res) => {
     res.render('pages/logout');
 });
 
+
+// Profile page
 app.get('/profile', auth, async (req, res) => {
   try {
     const userId = req.session.user.user_id;
@@ -250,7 +255,7 @@ app.get('/myCookbooks', auth, async (req, res) => {
     try {
       const userId = req.session.user.user_id;
       const data = await db.any(
-        'SELECT c.name FROM cookbook_owners co INNER JOIN cookbooks c ON co.cookbook_id = c.cookbook_id WHERE co.user_id = $1;',
+        'SELECT c.cookbook_id, c.name FROM cookbook_owners co INNER JOIN cookbooks c ON co.cookbook_id = c.cookbook_id WHERE co.user_id = $1;',
         [userId]
       );
   
@@ -265,6 +270,7 @@ app.get('/myCookbooks', auth, async (req, res) => {
 
 
 // Load a cookbook
+// Expects cookbookId
 app.get('/cookbook', auth, async (req, res) => {
     try {
 
@@ -279,13 +285,13 @@ app.get('/cookbook', auth, async (req, res) => {
       }
 
       // Get cookbook name
-      const cookbookName = db.one('SELECT name FROM cookbooks WHERE cookbook_id = $1;', [req.query.cookbookId]);
+      const cookbookName = await db.one('SELECT name FROM cookbooks WHERE cookbook_id = $1;', [req.query.cookbookId]);
 
       // Get recipes in the cookbook and display it to the user
-      const query = 'SELECT name, description, difficulty, time FROM \
-      cookbooks c INNER JOIN saved_recipes sr ON cookbooks.cookbook_id = saved_recipes.cookbook_id \
-      INNER JOIN recipes r ON sr.recipe_id = r.recipe_id \
-      WHERE c.cookbook_id = $1;';
+      const query = `SELECT r.name, r.description, r.difficulty, r.time FROM 
+      cookbooks c INNER JOIN saved_recipes sr ON cookbooks.cookbook_id = saved_recipes.cookbook_id 
+      INNER JOIN recipes r ON sr.recipe_id = r.recipe_id 
+      WHERE c.cookbook_id = $1;`;
       const data = await db.any(query, [req.query.cookbookId]);
   
       res.render('pages/recipe_results', {
@@ -299,8 +305,89 @@ app.get('/cookbook', auth, async (req, res) => {
     }
 });
 
-app.get('/welcome', (req, res) => {
-  res.json({status: 'success', message: 'Welcome!'});
+
+// Cookbook post
+// Expects name perameter
+app.post('/cookbook', auth, function (req, res) {
+    db.task(async t => {
+        const recipeQuery =
+            'INSERT INTO cookbooks (name) VALUES ($1) RETURNING *;';
+
+        const recipe = await t.one(recipeQuery, [req.body.name]);
+
+        await t.none(
+            'INSERT INTO cookbook_owners (user_id, cookbook_id) VALUES ($1, $2);',
+            [req.session.user.user_id, recipe.cookbook_id]
+        );
+
+        return recipe;
+    })
+        .then(recipe => {
+            res.render('pages/profile', {title: 'Succesfully created cookbook',});
+            // res.status(201).json({ success: true, recipe });
+        })
+        .catch(error => {
+            console.error('Error creating recipe:', error);
+            res.status(500).json({success: false, message: 'Failed to create recipe', error});
+        });
+});
+
+
+// Get save recipe page
+// Expects recipeId
+app.get('/saveRecipe', auth, async (req, res) => {
+    try {
+
+      // Get user
+      const userId = req.session.user.user_id;
+
+      // Get recipe_id and name
+      const recipeId = req.query.recipeId;
+      const recipeName = await db.one('SELECT name FROM recipes WHERE recipe_id = $1;', [recipeId]);
+
+      // Get recipes in the cookbook and display it to the user
+      const cookbooks = await db.any(
+        `SELECT c.cookbook_id, c.name FROM 
+        cookbook_owners co INNER JOIN cookbooks c ON co.cookbook_id = c.cookbook_id 
+        WHERE co.user_id = $1;`,
+        [userId]
+      );
+  
+      res.render('pages/save_recipe', {
+        recipeName: recipeName.name,
+        recipeId: recipeId,
+        cookbooks: cookbooks
+      });
+
+    } catch (error) {
+      console.error('Error finding cookbooks: ', error);
+      res.status(500).send('An error occurred while loading the cookbooks');
+    }
+});
+
+
+// Post to save a recipe
+// Expects recipeID and cookbookId
+app.post('/saveRecipe', auth, async (req, res) => {
+    try {
+
+        // Make sure user owns the cookbook
+        const userId = req.session.user.user_id;
+        const owner = await db.one(
+            'SELECT user_id FROM cookbook_owners WHERE cookbook_id = $1;',
+            [req.query.cookbookId]
+        );
+        if (userId != owner) {
+            return res.status(500).send('Cannot save to another\'s cookbook');
+        }
+
+        // Add to saved_recipes table
+        await db.none('INSERT INTO saved_recipes (recipe_id, cookbook_id) VALUES ($1, $2)', [req.query.recipeID, req.query.cookbookId]);
+
+    } catch (error) {
+        console.error('Error saving recipe: ', error);
+        res.status(500).send('An error occurred while loading the cookbooks');
+    }
 });
 
 
