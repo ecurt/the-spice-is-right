@@ -11,36 +11,41 @@ We could also change the name, I just put recipe_results for now --}}
 
 {{!-- Recipe cards displayed in rows of three --}}
 {{#each data}}
-    {{!-- Start a new row every 3 cards --}}
-    {{#if (isMod3 @index)}}
-        {{#if @index}}
-            </div> <!-- Close previous row if not the first element -->
-        {{/if}}
-        <div class="row container-fluid"> <!-- Start a new row -->
+{{!-- Start a new row every 3 cards --}}
+{{#if (isMod3 @index)}}
+{{#if @index}}
+</div> <!-- Close previous row if not the first element -->
+{{/if}}
+<div class="row container-fluid"> <!-- Start a new row -->
     {{/if}}
 
     <div class="col-sm-4 rounded" style="padding-bottom:20px;">
+        <a href="/viewRecipe?recipeId=" style="text-decoration:none;background-color:none; color:black;">
         <div class="border rounded">
-        <div class="rounded" id="placeholder-img-box" style="height: 200px; background-color: powderblue; position: relative;">
-            <div style="width: 50px; height: 50px; background-color: red; position: absolute; bottom: 0; right: 0;"></div>
-        </div>
-        <div class="card-body p-3">
-            <div class="card-title" style="display: flex; justify-content: space-between; align-items: center;">
-                <h5>{{this.name}}</h5>
-                <span style="font-size: 14px; color: gray;">Difficulty: {{this.difficulty}}/5</span>
+            <div class="rounded" id="placeholder-img-box"
+                style="height: 200px; background-color: powderblue; position: relative;">
+                <div class="" style="width: 50px; height: 50px; background-color: rgba(0, 255, 68, 0); position: absolute; bottom: 0; right: 0; text-align:center;">
+                    <span style="color:red; font-size:40px;">♥</span>
+                </div>
             </div>
-            <div class="card-desc" style="display: flex; justify-content: space-between; align-items: center;">
-                <p class="card-text">{{this.description}}</p>
-                <span style="font-size: 14px; color: gray;">Cook Time: {{formatTime this.time}}</span>
+            <div class="card-body p-3">
+                <div class="card-title" style="display: flex; justify-content: space-between; align-items: center;">
+                    <h5>{{this.name}}</h5>
+                    <span style="font-size: 14px; color: gray;">Difficulty: {{this.difficulty}}/5</span>
+                </div>
+                <div class="card-desc" style="display: flex; justify-content: space-between; align-items: center;">
+                    <p class="card-text">{{this.description}}</p>
+                    <span style="font-size: 14px; color: gray;">Cook Time: {{formatTime this.time}}</span>
+                </div>
             </div>
         </div>
-        </div>
+        </a>
     </div>
 
     {{!-- Close the last row after the last card --}}
     {{#if @last}}
-        </div>
-    {{/if}}
+</div>
+{{/if}}
 {{/each}}
 
 {{> footer}}
