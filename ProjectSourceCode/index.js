@@ -134,6 +134,12 @@ app.post('/addRecipe', auth, function (req, res) {
 
 
 
+app.get('/viewRecipe',(req, res) => {
+  res.render('pages/view_recipe');
+});
+
+
+
 app.get('/addRecipe', auth, (req, res) => {
     res.render('pages/add_recipe');
 });

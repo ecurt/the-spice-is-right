@@ -1,0 +1,114 @@
+<style>
+
+
+.recipe-title {
+    margin-top: 10px;
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 2rem;
+    font-weight: bold;
+}
+
+
+.content {
+    display: flex;
+    gap: 20px;
+}
+
+
+.left-section {
+    flex: 1;
+}
+
+
+.left-section h2 {
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+}
+
+
+.ingredients-list {
+    list-style-type: circle; /*can change what bullet points look like*/
+    padding-left: 20px;
+}
+
+
+.ingredients-list li {
+    margin-bottom: 5px;
+}
+
+
+.image-section {
+    flex: 2;
+}
+
+
+.image-container {
+    padding-top: 56.25%; /* image aspect ratio, can change later */
+    background-color: gray;
+}
+
+
+
+
+.description {
+    margin-top: 10px;
+    font-size: 0.9rem;
+}
+
+
+.right-section {
+    flex: 1;
+}
+
+
+.right-section h2 {
+    font-size: 1.2rem;
+}
+
+
+
+
+
+
+
+
+</style>
+
+
+<div class="container">
+    <h1 class="recipe-title">Recipe Title</h1>
+    <div class="content">
+        <div class="left-section">
+            <h2>Ingredients:</h2>
+            <ul class="ingredients-list">
+                <li>Ingredient 1</li>
+                <li>Ingredient 2</li>
+                <li>Ingredient 3</li>
+                <li>Ingredient 4</li>
+            </ul>
+        </div>
+
+
+        <div class="image-section">
+            <div class="image-container">
+                {{!-- <img src="{{recipe.image ||'.\public\images\Fish_logo.jpg'}}" alt="Recipe image"> --}}
+                <img src=".\public\images\Fish_logo.jpg" alt="Recipe image">
+
+
+            </div>
+            <p class="description">Description Description Description  
+            </p>
+        </div>
+
+
+        <div class="right-section">
+            <h2>Instructions:</h2>
+            <ol class="instructions-list">
+                <li>We might need to change it so users add recipes and ingredients into an order list</li>
+
+
+            </ol>
+        </div>
+    </div>
+</div>
