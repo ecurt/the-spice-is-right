@@ -53,7 +53,7 @@
           <input
             type="text"
             id="title"
-            name="title"
+            name="name"
             placeholder="Enter recipe title"
             required
           />
@@ -62,7 +62,7 @@
             <label for="steps">Description</label>
             <textarea
               id="steps"
-              name="steps"
+              name="description"
               rows="9"
               placeholder="Provide a description for your recipe."
               required
@@ -86,7 +86,7 @@
             <label for="steps">Instructions</label>
             <textarea
               id="steps"
-              name="steps"
+              name="instructions"
               rows="20"
               placeholder="Describe the steps to prepare the dish"
               required
@@ -99,12 +99,38 @@
               id="image"
               name="image"
               accept="image/*"
-              required
+              {{!-- required --}}
+              {{!-- I commented this out for now so that it is easier to test, add this back when we implement images. Or leave it if images are optional  --}}
             />
             
           </div>
           <!-- need an empty line, figure out a better way how to add one: -->
           <br>
+
+          {{!-- Start of new form groups (that Evan created) --}}
+          <div class="form-group">
+            <label for="difficulty">Difficulty</label>
+            <input
+              type="text"
+              id="difficulty"
+              name="difficulty"
+              placeholder="Enter difficulty (as an int)"
+              required
+            />
+          </div>
+
+          <div class="form-group">
+            <label for="time">Time</label>
+            <input
+              type="text"
+              id="time"
+              name="time"
+              placeholder="Enter time (as an int)"
+              required
+            />
+          </div>
+          {{!-- End of new form groups --}}
+          {{!-- Also find a way to verify time is an int in both frontend and backend --}}
 
           <button type="submit">Submit Recipe</button>
         </form>
