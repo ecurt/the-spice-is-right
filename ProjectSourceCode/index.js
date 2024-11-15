@@ -213,8 +213,8 @@ app.post('/register', async (req, res) => {
     return res.status(400).json({ message: 'Invalid input' });
   }
 
-  console.log('Username:', username);
-  console.log('Password:', password);
+//   console.log('Username:', username);
+//   console.log('Password:', password);
 
   try {
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -294,7 +294,7 @@ app.get('/cookbook', auth, async (req, res) => {
       'SELECT user_id FROM cookbook_owners WHERE cookbook_id = $1;',
       [req.query.cookbookId]
     );
-    if (userId != owner) {
+    if (userId != owner.user_id) {
       return res.status(404).send('Cookbook not found.');
     }
 
@@ -303,13 +303,13 @@ app.get('/cookbook', auth, async (req, res) => {
 
     // Get recipes in the cookbook and display it to the user
     const query = `SELECT r.name, r.description, r.difficulty, r.time FROM 
-      cookbooks c INNER JOIN saved_recipes sr ON cookbooks.cookbook_id = saved_recipes.cookbook_id 
+      cookbooks c INNER JOIN saved_recipes sr ON c.cookbook_id = sr.cookbook_id 
       INNER JOIN recipes r ON sr.recipe_id = r.recipe_id 
       WHERE c.cookbook_id = $1;`;
-    const data = await db.any(query, [req.query.cookbookId]);
+    const data = await db.any(query, [parseInt(req.query.cookbookId)]);
 
     res.render('pages/recipe_results', {
-      title: cookbookName,
+      title: cookbookName.name,
       data: data
     });
 
