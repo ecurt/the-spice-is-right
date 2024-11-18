@@ -6,41 +6,41 @@ We could also change the name, I just put recipe_results for now --}}
 {{> message}}
 
 <div class="mx-auto">
-<h1 class="mt-3">{{title}}</h1>
+    <h1 class="mt-3">{{title}}</h1>
 </div>
 
-{{!-- Read this: --}}
-{{!-- To test that my code was passing to handlebars properly, I made this quickly. Your version is just 3 of these cards. --}}
-{{!-- All of the cards appear on the same row but that was an easy fix on lab 8 (discovery page) --}}
+{{!-- Recipe cards displayed in rows of three --}}
+{{#each data}}
+    {{!-- Start a new row every 3 cards --}}
+    {{#if (isMod3 @index)}}
+        {{#if @index}}
+            </div> <!-- Close previous row if not the first element -->
+        {{/if}}
+        <div class="row container-fluid"> <!-- Start a new row -->
+    {{/if}}
 
-<div class="card-group">
-    {{#each data}}
-    <div class="card">
-        {{!-- placeholder image area --}}
-        <div id="placeholder-img-box" style="height: 200px; background-color: powderblue; position: relative;">
-            {{!-- like button placeholder --}}
-            <div style="width: 50px; height: 50px; background-color: red; position: absolute; bottom: 0; right: 0;">
-            </div>
+    <div class="col-sm-4 rounded" style="padding-bottom:20px;">
+        <div class="border rounded">
+        <div class="rounded" id="placeholder-img-box" style="height: 200px; background-color: powderblue; position: relative;">
+            <div style="width: 50px; height: 50px; background-color: red; position: absolute; bottom: 0; right: 0;"></div>
         </div>
-        <div class="card-body">
+        <div class="card-body p-3">
             <div class="card-title" style="display: flex; justify-content: space-between; align-items: center;">
                 <h5>{{this.name}}</h5>
-                <span style="font-size: 14px; color: gray;">Difficulty: {{this.difficulty}}</span>
-                {{!-- ★★★☆☆  --}}
-                {{!-- Put this in a comment in case you wanna do some logic to render it properly --}}
-
+                <span style="font-size: 14px; color: gray;">Difficulty: {{this.difficulty}}/5</span>
             </div>
             <div class="card-desc" style="display: flex; justify-content: space-between; align-items: center;">
                 <p class="card-text">{{this.description}}</p>
-                <span style="font-size: 14px; color: gray;">Cook Time: {{this.time}}</span>
+                <span style="font-size: 14px; color: gray;">Cook Time: {{formatTime this.time}}</span>
             </div>
-
-            {{!-- <div class="Allergens" style="display: flex; justify-content: space-between; align-items: center;">
-                <p class="card-text">Allergens:</p>
-                <span style="font-size: 14px; color: gray;">Nuts, Fish</span>
-            </div> --}}
+        </div>
         </div>
     </div>
-    {{/each}}
-</div>
+
+    {{!-- Close the last row after the last card --}}
+    {{#if @last}}
+        </div>
+    {{/if}}
+{{/each}}
+
 {{> footer}}
