@@ -251,11 +251,14 @@ app.get('/profile', auth, async (req, res) => {
       'SELECT recipe_id, name, description FROM recipes WHERE recipe_id IN (SELECT recipe_id FROM recipe_owners WHERE user_id = $1)',
       [userId]
     );
+    const cookbooks = await db.any('SELECT c.cookbook_id, c.name FROM cookbook_owners co INNER JOIN cookbooks c ON co.cookbook_id = c.cookbook_id WHERE co.user_id = $1;', [userId]);
+
 
     res.render('pages/profile', {
       title: 'User Profile',
       user: user,
       recipes: userRecipes,
+      cookbooks: cookbooks,
     });
   } catch (error) {
     console.error('Error fetching user profile:', error);
@@ -343,7 +346,8 @@ app.post('/cookbook', auth, function (req, res) {
     return recipe;
   })
     .then(recipe => {
-      res.render('pages/profile', { title: 'Succesfully created cookbook', });
+      res.redirect('/profile')
+      // res.render('pages/profile', { title: 'Succesfully created cookbook', });
       // res.status(201).json({ success: true, recipe });
     })
     .catch(error => {

@@ -28,6 +28,20 @@
         </div>
         <div class="container mt-4">
         <h2>Add Cookbook</h2>
+            <div class="card-body">
+                <h4 class="card-title">Your Cookbooks</h4>
+                {{#if cookbooks.length}}
+                    <ul class="list-group list-group-flush">
+                        {{#each cookbooks}}
+                            <li class="list-group-item">
+                                <h5 class="mb-1">{{name}}</h5>
+                            </li>
+                        {{/each}}
+                    </ul>
+                {{else}}
+                    <p class="text-muted">You have no cookbooks yet!</p>
+                {{/if}}
+            </div>
         <div class="text-center">
           <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addCookbookModal">
           Add Cookbook
