@@ -88,9 +88,13 @@ h2 {
         </div>
         <!-- Image and Description Section -->
         <div class="image-section">
-            <div class="image-container">
-                <img src="breaks_code_fix_later" alt="Recipe image">
-            </div>
+            {{!-- <div class="image-container"> --}}
+                <img {{#if recipe.image}}
+                    src="{{recipe.image}}"
+                    {{else}}
+                    src="images/No_Image_Available.jpg"
+                    {{/if}} alt="Recipe image">
+            {{!-- </div> --}}
             <br>
             <h2>Description:</h2>
             <p class="description">{{recipe.description}}</p>

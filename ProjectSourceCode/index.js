@@ -111,8 +111,19 @@ app.get('/', (req, res) => {
 // Create Recipe
 app.post('/addRecipe', auth, function (req, res) {
   db.task(async t => {
+
+    // Debug
+    // console.log(req.body.image)
+
+    // Check if the image is too big (if it exists first)
+    if (req.body.image) {
+      if (req.body.image.length > 10000000) {
+        throw new Error('Image is too large.');
+      }
+    }
+
     const recipeQuery =
-      'INSERT INTO recipes (name, description, difficulty, time, ingredients, instructions) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *;';
+      'INSERT INTO recipes (name, description, difficulty, time, ingredients, instructions, image) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING *;';
 
     // const reviewPromise =
     const recipe = await t.one(recipeQuery, [
@@ -121,7 +132,8 @@ app.post('/addRecipe', auth, function (req, res) {
       req.body.difficulty,
       req.body.time,
       req.body.ingredients,
-      req.body.instructions
+      req.body.instructions,
+      req.body.image
     ]);
 
     await t.none(
@@ -147,7 +159,7 @@ app.post('/addRecipe', auth, function (req, res) {
 app.get('/viewRecipe', async (req, res) => {
   try {
     const recipe = await db.one(
-        'SELECT recipe_id, name, description, difficulty, time, ingredients, instructions FROM recipes WHERE recipe_id = $1',
+        'SELECT * FROM recipes WHERE recipe_id = $1',
         [req.query.recipeId]
     );
 
