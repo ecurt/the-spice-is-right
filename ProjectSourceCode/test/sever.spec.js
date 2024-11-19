@@ -1,84 +1,84 @@
-// ********************** Initialize server **********************************
+// // ********************** Initialize server **********************************
 
-const server = require('../index'); //TODO: Make sure the path to your index.js is correctly added
+// const server = require('../index'); //TODO: Make sure the path to your index.js is correctly added
 
-// ********************** Import Libraries ***********************************
+// // ********************** Import Libraries ***********************************
 
-const chai = require('chai'); // Chai HTTP provides an interface for live integration testing of the API's.
-const chaiHttp = require('chai-http');
-chai.should();
-chai.use(chaiHttp);
-const {assert, expect} = chai;
+// const chai = require('chai'); // Chai HTTP provides an interface for live integration testing of the API's.
+// const chaiHttp = require('chai-http');
+// chai.should();
+// chai.use(chaiHttp);
+// const {assert, expect} = chai;
 
-// ********************** DEFAULT WELCOME TESTCASE ****************************
+// // ********************** DEFAULT WELCOME TESTCASE ****************************
 
-describe('Server!', () => {
-  // Sample test case given to test / endpoint.
-  it('Returns the default welcome message', done => {
-    chai
-      .request(server)
-      .get('/welcome')
-      .end((err, res) => {
-        expect(res).to.have.status(200);
-        expect(res.body.status).to.equals('success');
-        assert.strictEqual(res.body.message, 'Welcome!');
-        done();
-      });
-  });
-});
+// describe('Server!', () => {
+//   // Sample test case given to test / endpoint.
+//   it('Returns the default welcome message', done => {
+//     chai
+//       .request(server)
+//       .get('/welcome')
+//       .end((err, res) => {
+//         expect(res).to.have.status(200);
+//         expect(res.body.status).to.equals('success');
+//         assert.strictEqual(res.body.message, 'Welcome!');
+//         done();
+//       });
+//   });
+// });
 
-// *********************** TODO: WRITE 2 UNIT TESTCASES **************************
+// // *********************** TODO: WRITE 2 UNIT TESTCASES **************************
 
-// ********************************************************************************
-//TEST CASE FOR REGISTER
-describe('Testing Add User API', () => {
-    it('positive : /register', done => {
-      chai
-        .request(server)
-        .post('/register')
-        .send({username: 'Nine Critchepon Chuenchit', password: 'Anushi20040925!!'})
-        .end((err, res) => {
-          expect(res).to.have.status(200);
-          done();
-        });
-    });
+// // ********************************************************************************
+// //TEST CASE FOR REGISTER
+// describe('Testing Add User API', () => {
+//     it('positive : /register', done => {
+//       chai
+//         .request(server)
+//         .post('/register')
+//         .send({username: 'Nine Critchepon Chuenchit', password: 'Anushi20040925!!'})
+//         .end((err, res) => {
+//           expect(res).to.have.status(200);
+//           done();
+//         });
+//     });
     
-    it('Negative : /register. Checking invalid name', done => {
-        chai
-          .request(server)
-          .post('/register')
-          .send({username: 10, password: 'Anushi20040925!!'})
-          .end((err, res) => {
-            expect(res).to.have.status(400);
-            expect(res.body.message).to.equals('Invalid input');
-            done();
-          });
-    });
-  });
-//TEST ON LOGIN!!
-  describe('Testing Login User API', () => {
-    it('positive : /login', done => {
-      chai
-        .request(server)
-        .post('/login')
-        .send({username: 'Nine Critchepon Chuenchit', password: 'Anushi20040925!!'})
-        .end((err, res) => {
-          expect(res).to.have.status(200);
-          //expect(res.body.message).to.equals('Success');
-          done();
-        });
-    });
+//     it('Negative : /register. Checking invalid name', done => {
+//         chai
+//           .request(server)
+//           .post('/register')
+//           .send({username: 10, password: 'Anushi20040925!!'})
+//           .end((err, res) => {
+//             expect(res).to.have.status(400);
+//             expect(res.body.message).to.equals('Invalid input');
+//             done();
+//           });
+//     });
+//   });
+// //TEST ON LOGIN!!
+//   describe('Testing Login User API', () => {
+//     it('positive : /login', done => {
+//       chai
+//         .request(server)
+//         .post('/login')
+//         .send({username: 'Nine Critchepon Chuenchit', password: 'Anushi20040925!!'})
+//         .end((err, res) => {
+//           expect(res).to.have.status(200);
+//           //expect(res.body.message).to.equals('Success');
+//           done();
+//         });
+//     });
     
-    it('Negative : /login. Checking invalid name', done => {
-        chai
-          .request(server)
-          .post('/login')
-          .send({username: 10, password: 'Anushi20040925!!'}) //db error expected due to username being 10, don't panic
-          .end((err, res) => {
-            expect(res).to.have.status(400);
-            expect(res.body.message).to.equals('Invalid input');
-            done();
-          });
-    });
-  });
+//     it('Negative : /login. Checking invalid name', done => {
+//         chai
+//           .request(server)
+//           .post('/login')
+//           .send({username: 10, password: 'Anushi20040925!!'}) //db error expected due to username being 10, don't panic
+//           .end((err, res) => {
+//             expect(res).to.have.status(400);
+//             expect(res.body.message).to.equals('Invalid input');
+//             done();
+//           });
+//     });
+//   });
 

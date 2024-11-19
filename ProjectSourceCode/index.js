@@ -132,16 +132,45 @@ app.post('/addRecipe', auth, function (req, res) {
         });
 });
 
+// Viewing recipe endpoints 
 
+app.get('/viewRecipe/:name', async (req, res) => {
+  try {
+    // need to deal w/ special characters
+      const recipeName = decodeURIComponent(req.params.name).toLowerCase();
+      console.log(`Fetching recipe with name: ${recipeName}`);
 
-app.get('/viewRecipe',(req, res) => {
-  res.render('pages/view_recipe');
+      const recipe = await db.oneOrNone(
+          'SELECT name, description, difficulty, time, ingredients, instructions FROM recipes WHERE LOWER(name) = LOWER($1)',
+          [recipeName]
+      );
+
+      if (!recipe) {
+          return res.status(404).send('Recipe not found.');
+      }
+
+      console.log('Fetched recipe:', recipe);
+// make string an array to make it into lists to match template
+      recipe.ingredients = recipe.ingredients ? recipe.ingredients.split('\n').map(item => item.trim()) : [];
+      recipe.instructions = recipe.instructions ? recipe.instructions.split('\n').map(item => item.trim()) : [];
+
+      recipe.image = 'images/Fish_logo.jpg'; 
+      console.log('Parsed recipe with default image:', recipe);
+
+      res.render('pages/view_recipe', {
+          title: recipe.name,
+          recipe: recipe,
+      });
+  } catch (error) {
+      console.error('Error fetching recipe:', error.message);
+      res.status(500).send('An error occurred while loading the recipe.');
+  }
 });
-
 
 
 app.get('/addRecipe', auth, (req, res) => {
     res.render('pages/add_recipe');
+    
 });
 
 
