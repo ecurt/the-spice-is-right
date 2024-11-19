@@ -44,10 +44,31 @@
     background-color: navy;
   }
 </style>
+
+<script>
+    function imageToBase64(image) {
+        const file = image.files[0];
+        let reader = new FileReader();
+        reader.onloadend = function() {
+
+            // Check length
+            if (reader.result.length > 10000000) {
+                alert('Image is too large, please select another image.');
+            }
+
+            // console.log('Base64: ', reader.result)
+
+            // Set hidden form entry with name 'image' to be the result
+            document.forms['myForm'].elements["image"].value = reader.result;
+        }
+        reader.readAsDataURL(file);
+    }
+</script>
+
 <div class="container">
     <div class="left">
         <h2>Create Recipe</h2>        
-        <form action="/addRecipe" method="POST">
+        <form action="/addRecipe" method="POST" id="myForm">
             <!-- Title -->
             <div class="form-group">
                 <label for="title">Title</label>
@@ -76,9 +97,9 @@
 
         <!-- Recipe Image -->
         <div class="form-group">
-            {{!-- <label for="image">Recipe Image</label>
-            <input type="file" id="image" name="image" accept="image/*" /> --}}
-               <img src="{{recipe.image}}" alt="Recipe image">
+            <input name="image" id="myImage" type="hidden" value="">
+            <label for="myFile">Recipe Image</label>
+            <input type="file" id="myFile" name="myFile" accept="image/*" onchange="imageToBase64(this)"/>
 
         </div>
         
