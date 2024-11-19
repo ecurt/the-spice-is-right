@@ -108,13 +108,13 @@
         <!-- Difficulty -->
         <div class="form-group">
             <label for="difficulty">Difficulty</label>
-            <input type="text" id="difficulty" name="difficulty" placeholder="Enter difficulty (as an int)" required />
+            <input type="number" min="1" max="5" id="difficulty" name="difficulty" placeholder="Enter difficulty (as an int)" required />
         </div>
 
-        <!-- Time -->
+        <!-- Time (max is 24 hours)-->
         <div class="form-group">
             <label for="time">Time</label>
-            <input type="text" id="time" name="time" placeholder="Enter time (as an int)" required />
+            <input type="number" id="time" max="1440" name="time" placeholder="Enter time in minutes" required />
         </div>
 
         <button type="submit">Submit Recipe</button>
