@@ -142,11 +142,35 @@ app.post('/addRecipe', auth, function (req, res) {
 });
 
 
+// Gets recipe
+// Expects 'recipeId' query perameter
+app.get('/viewRecipe', async (req, res) => {
+  try {
+    const recipe = await db.one(
+        'SELECT recipe_id, name, description, difficulty, time, ingredients, instructions FROM recipes WHERE recipe_id = $1',
+        [req.query.recipeId]
+    );
 
-app.get('/viewRecipe', (req, res) => {
-  res.render('pages/view_recipe');
+    if (!recipe) {
+        return res.status(404).send('Recipe not found.');
+    }
+
+    // console.log('Fetched recipe:', recipe);
+    // make string an array to make it into lists to match template
+    recipe.ingredients = recipe.ingredients ? recipe.ingredients.split('\n').map(item => item.trim()) : [];
+    recipe.instructions = recipe.instructions ? recipe.instructions.split('\n').map(item => item.trim()) : [];
+
+    // recipe.image = 'images/Fish_logo.jpg'; 
+    // console.log('Parsed recipe with default image:', recipe);
+
+    res.render('pages/view_recipe', {
+      recipe: recipe
+    });
+  } catch (error) {
+      console.error('Error fetching recipe:', error.message);
+      res.status(500).send('An error occurred while loading the recipe.');
+  }
 });
-
 
 app.get('/addRecipe', auth, (req, res) => {
   res.render('pages/add_recipe');
