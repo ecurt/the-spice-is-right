@@ -61,7 +61,7 @@ h2 {
     font-size: 1.2rem;
 }
   button {
-    width: 25%;
+    width: 50%;
     padding: 0.75rem;
     color: white;
     background-color: blue;
@@ -100,6 +100,13 @@ h2 {
             <p class="description">{{recipe.description}}</p>
             <p><strong>Difficulty:</strong> {{recipe.difficulty}}</p>
             <p><strong>Time:</strong> {{formatTime recipe.time}}</p>
+
+            <a href="/saveRecipe?recipeId={{recipe.recipe_id}}">
+            <button>
+            Save Recipe to Cookbook</button>
+            </a>
+            
+
         </div>
 
         <!-- Instructions Section -->
@@ -110,13 +117,17 @@ h2 {
                 <li>{{this}}</li>
                 {{/each}}
             </ol>
+
+            <form action="/likeRecipe" method="POST">
+            <input name="recipeId" type="hidden" value="{{recipe.recipe_id}}">
+            <button type="submit">Like Recipe</button>
+            </form>
+
         </div>
     </div>
 </div>
 
-     <button type="save">
-        <a href="/save_recipe"></a>
-        Save Recipe to Cookbook</button>
+     
 
 
 </div>

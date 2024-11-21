@@ -323,7 +323,7 @@ app.get('/cookbook', auth, async (req, res) => {
     const cookbookName = await db.one('SELECT name FROM cookbooks WHERE cookbook_id = $1;', [req.query.cookbookId]);
 
     // Get recipes in the cookbook and display it to the user
-    const query = `SELECT r.recipe_id r.name, r.description, r.difficulty, r.time, r.image FROM 
+    const query = `SELECT r.recipe_id, r.name, r.description, r.difficulty, r.time, r.image FROM 
       cookbooks c INNER JOIN saved_recipes sr ON c.cookbook_id = sr.cookbook_id 
       INNER JOIN recipes r ON sr.recipe_id = r.recipe_id 
       WHERE c.cookbook_id = $1;`;
@@ -385,7 +385,7 @@ app.get('/saveRecipe', auth, async (req, res) => {
 
     // Get recipe_id and name
     const recipeId = req.query.recipeId;
-    const recipeName = await db.one('SELECT name FROM recipes WHERE recipe_id = $1;', [recipeId]);
+    const recipeName = await db.one('SELECT name FROM recipes WHERE recipe_id = $1;', [recipeId]); // Null?
 
     // Get recipes in the cookbook and display it to the user
     const cookbooks = await db.any(
@@ -417,14 +417,17 @@ app.post('/saveRecipe', auth, async (req, res) => {
     const userId = req.session.user.user_id;
     const owner = await db.one(
       'SELECT user_id FROM cookbook_owners WHERE cookbook_id = $1;',
-      [req.query.cookbookId]
+      [req.body.cookbookId]
     );
-    if (userId != owner) {
+    if (userId != owner.user_id) {
       return res.status(500).send('Cannot save to another\'s cookbook');
     }
 
     // Add to saved_recipes table
     await db.none('INSERT INTO saved_recipes (recipe_id, cookbook_id) VALUES ($1, $2)', [req.body.recipeID, req.body.cookbookId]);
+
+    // Redirect
+    res.redirect(`/cookbook?cookbookId=${req.body.cookbookId}`);
 
   } catch (error) {
     console.error('Error saving recipe: ', error);
@@ -441,7 +444,10 @@ app.post('/likeRecipe', auth, async (req, res) => {
     const userId = req.session.user.user_id;
 
     // Add to saved_recipes table
-    await db.none('INSERT INTO likes (user_id, recipe_id) VALUES ($1, $2)', [userId, req.body.recipeID]);
+    await db.none('INSERT INTO likes (user_id, recipe_id) VALUES ($1, $2)', [userId, req.body.recipeId]);
+
+    // Redirect
+    res.redirect('/likedRecipes');
 
   } catch (error) {
     console.error('Error saving recipe: ', error);
