@@ -170,9 +170,9 @@ app.get('/viewRecipe', async (req, res) => {
 
     // console.log('Fetched recipe:', recipe);
     // make string an array to make it into lists to match template
-    recipe.ingredients = recipe.ingredients ? recipe.ingredients.split('\n').map(item => item.trim()) : [];
-    recipe.instructions = recipe.instructions ? recipe.instructions.split('\n').map(item => item.trim()) : [];
-
+    recipe.ingredients = recipe.ingredients ? recipe.ingredients.split(','): [];
+    recipe.instructions = recipe.instructions ? recipe.instructions.split('/n') : [];
+    
     // recipe.image = 'images/Fish_logo.jpg'; 
     // console.log('Parsed recipe with default image:', recipe);
 
