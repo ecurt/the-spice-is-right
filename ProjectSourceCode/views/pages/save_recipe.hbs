@@ -11,7 +11,7 @@
 							<label for="select">Choose a cookbook</label>
 							<select class="form-control" id="select" name="cookbookId" required>
 								<option value="" disabled selected>Select...</option>
-								{{#each data}}
+								{{#each cookbooks}}
 								<option value="{{this.cookbook_id}}">{{this.name}}</option>
 								{{/each}}
 							</select>
