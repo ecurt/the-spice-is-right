@@ -284,7 +284,7 @@ app.get('/profile', auth, async (req, res) => {
     const userId = req.session.user.user_id;
     const user = await db.one('SELECT username FROM users WHERE user_id = $1', [userId]);
     const userRecipes = await db.any(
-      'SELECT recipe_id, name, description FROM recipes WHERE recipe_id IN (SELECT recipe_id FROM recipe_owners WHERE user_id = $1)',
+      'SELECT recipe_id, name, description, difficulty, time FROM recipes WHERE recipe_id IN (SELECT recipe_id FROM recipe_owners WHERE user_id = $1)',
       [userId]
     );
     const cookbooks = await db.any('SELECT c.cookbook_id, c.name FROM cookbook_owners co INNER JOIN cookbooks c ON co.cookbook_id = c.cookbook_id WHERE co.user_id = $1;', [userId]);

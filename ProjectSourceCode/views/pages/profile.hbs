@@ -1,79 +1,125 @@
+<style>
+    .cookbook-link {
+        text-decoration: none; /* Remove underline */
+        color: inherit; /* Inherit the text color */
+    }
+
+    .recipe-link {
+        text-decoration: none; /* Remove underline */
+        color: inherit; /* Inherit the text color */
+    }
+
+    .list-group-item {
+        padding: 1rem; /* Add padding for better spacing */
+        border: 1px solid #dee2e6; /* Subtle border for each item */
+        border-radius: 5px; /* Rounded corners */
+        margin-bottom: 0.5rem; /* Space between items */
+    }
+
+    .text-center {
+        margin-top: 1.5rem; /* Spacing between sections */
+    }
+
+    .card-body {
+        background-color: #f9f9f9; /* Light background for contrast */
+        border-radius: 10px; /* Smooth corner radius for the card */
+        padding: 2rem; /* Add padding for content */
+    }
+
+    .badge {
+        color: black;
+    }
+</style>
+
 {{> message}}
-<div class="container my-5">
-  <div class="row">
-    <div class="col-md-8 offset-md-2">
-      <div class="card">
-        <div class="card-header text-center">
-          <h2>Welcome, {{user.username}}!</h2>
-        </div>
-        <div class="card-body">
-          <h4 class="card-title">Your Recipes</h4>
-          {{#if recipes.length}}
-            <ul class="list-group list-group-flush">
-              {{#each recipes}}
-                <li class="list-group-item">
-                  <h5 class="mb-1">{{name}}</h5>
-                  <p class="mb-1">{{description}}</p>
-                  <span class="badge badge-secondary">Difficulty: {{difficulty}}</span>
-                  <span class="badge badge-info ml-2">Time: {{time}} mins</span>
-                </li>
-              {{/each}}
-            </ul>
-          {{else}}
-            <p class="text-muted">You have no recipes yet. <a href="/addRecipe">Add your first recipe</a>!</p>
-          {{/if}}
-        </div>
-        <div class="card-footer text-center">
-          <a href="/addRecipe" class="btn btn-primary">Add New Recipe</a>
-        </div>
-        <div class="container mt-4">
-        <h2>Add Cookbook</h2>
-            <div class="card-body">
-                <h4 class="card-title">Your Cookbooks</h4>
-                {{#if cookbooks.length}}
-                    <ul class="list-group list-group-flush">
-                        {{#each cookbooks}}
-                            <li class="list-group-item">
-                                <h5 class="mb-1">{{name}}</h5>
-                            </li>
-                        {{/each}}
-                    </ul>
-                {{else}}
-                    <p class="text-muted">You have no cookbooks yet!</p>
-                {{/if}}
+<div class="container my-5 ">
+    <div class="row">
+        <div class="col-md-8 offset-md-2 ">
+            <div class="card shadow">
+                <div class="card-header text-center bg-primary text-white">
+                    <h2>Welcome, {{user.username}}!</h2>
+                </div>
+                <a href="/likedRecipes" class="text-center" >View liked Recipes </a>
+                <div class="card-body">
+                    <h4 class="card-title">Your Recipes</h4>
+                    {{#if recipes.length}}
+                        <ul class="list-group list-group-flush">
+                            {{#each recipes}}
+                                <a href="/viewRecipe?recipeId={{this.recipe_id}}" class="recipe-link">
+                                <li class="list-group-item">
+                                    <h5 class="mb-1">{{name}}</h5>
+                                    <p class="mb-1 text-muted">{{description}}</p>
+                                    <span class="badge badge-secondary">Difficulty: {{difficulty}}</span>
+                                    <span class="badge badge-info ml-2">Time: {{time}} mins</span>
+                                </li>
+                                </a>
+                            {{/each}}
+                        </ul>
+                    {{else}}
+                        <p class="text-muted text-center mt-3">
+                            You have no recipes yet. <a href="/addRecipe" class="text-primary">Add your first recipe</a>!
+                        </p>
+                    {{/if}}
+                </div>
+                <div class="card-footer text-center">
+                    <a href="/addRecipe" class="btn btn-success">Add New Recipe</a>
+                </div>
             </div>
-        <div class="text-center">
-          <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addCookbookModal">
-          Add Cookbook
-          </button>
-          </div>
-      <div class="modal fade" id="addCookbookModal" tabindex="-1" role="dialog" aria-labelledby="addCookbookModalLabel" aria-hidden="true">
-      <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="addCookbookModalLabel">Add Cookbook Name</h5>
-        </div>
-        <form action="/cookbook" method="POST">
-          <div class="modal-body">
-            <div class="form-group">
-              <label for="cookbookName">Cookbook Name</label>
-              <input type="text" class="form-control" id="cookbookName" name="name" required>
+
+            <div class="card mt-4 shadow">
+                <div class="card-header text-center bg-dark text-white">
+                    <h4>Your Cookbooks</h4>
+                </div>
+                <div class="card-body">
+                    {{#if cookbooks.length}}
+                        <ul class="list-group list-group-flush">
+                            {{#each cookbooks}}
+                                <a href="/cookbook?cookbookId={{this.cookbook_id}}" class="cookbook-link">
+                                <li class="list-group-item d-flex justify-content-between align-items-center">
+                                    <h5 class="mb-1">{{name}}</h5>
+                                </li>
+                                </a>
+                            {{/each}}
+                        </ul>
+                    {{else}}
+                        <p class="text-muted text-center mt-3">You have no cookbooks yet!</p>
+                    {{/if}}
+                </div>
+                <div class="card-footer text-center">
+                    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addCookbookModal">
+                        Add Cookbook
+                    </button>
+                </div>
             </div>
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-            <button type="submit" class="btn btn-primary">Save Cookbook</button>
-          </div>
-        </form> 
-      </div>
+            <div class="modal fade" id="addCookbookModal" tabindex="-1" role="dialog"
+                 aria-labelledby="addCookbookModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="addCookbookModalLabel">Add Cookbook Name</h5>
+                        </div>
+                        <form action="/cookbook" method="POST">
+                            <div class="modal-body">
+                                <div class="form-group">
+                                    <label for="cookbookName">Cookbook Name</label>
+                                    <input type="text" class="form-control" id="cookbookName" name="name"
+                                           required>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel
+                                </button>
+                                <button type="submit" class="btn btn-primary">Save Cookbook</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-  </div>
-</div>
-</div>
-</div>
-</div>
 </div>
 
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+
 
