@@ -25,8 +25,9 @@ const hbs = handlebars.create({
 });
 
 // database configuration
+
 const dbConfig = {
-  host: 'db', // the database server
+  host: process.env.DATABASE_URL, // the database server
   port: 5432, // the database port
   database: process.env.POSTGRES_DB, // the database name
   user: process.env.POSTGRES_USER, // the user account to connect with
@@ -502,8 +503,12 @@ app.get('/likedRecipes', auth, async (req, res) => {
 // <!-- Section 5 : Start Server-->
 // *****************************************************
 // starting the server and keeping the connection open to listen for more requests
-module.exports = app.listen(3000);
-console.log('Server is listening on port 3000');
+module.exports = app
+if(require.main === module){
+  app.listen(3000)
+  console.log("Listening to port 3000!")
+}
+
 /*How to query the database directly with sql:
 docker compose up -d
 docker exec -it projectsourcecode-db-1 /bin/bash
