@@ -183,6 +183,25 @@ app.get('/viewRecipe', async (req, res) => {
       res.status(500).send('An error occurred while loading the recipe.');
   }
 });
+app.post('/deleteRecipe', auth, async (req, res) => {
+  try {
+    const userId = req.session.user.user_id;
+    const recipeId = req.body.recipeId;
+    const owner = await db.one(
+      'SELECT recipe_id FROM recipe_owners WHERE user_id = $1 AND recipe_id = $2',
+      [userId, recipeId]
+    );
+// shouldn't ever occur since delete is on profile page, but just in case:
+    if (!owner) {
+      return res.status(403).send('You can only delete your own recipes.');
+    }    await db.none('DELETE FROM recipe_owners WHERE recipe_id = $1', [recipeId]);
+    await db.none('DELETE FROM recipes WHERE recipe_id = $1', [recipeId]);
+    res.redirect('/profile');
+  } catch (error) {
+    console.error('Error deleting recipe', error);
+    res.status(500).send('An error occurred while deleting the recipe.');
+  }
+});
 
 app.get('/addRecipe', auth, (req, res) => {
   res.render('pages/add_recipe');

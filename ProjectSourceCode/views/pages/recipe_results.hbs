@@ -36,8 +36,7 @@ We could also change the name, I just put recipe_results for now --}}
     <div class="col-sm-4 rounded"  style="padding-bottom:20px;">
         <a href="/viewRecipe?recipeId={{this.recipe_id}}" style="text-decoration:none;background-color:none; color:black;">
         <div class="border rounded" style = "text-align: center; " >
-            <div class="rounded" id="placeholder-img-box"
-                >
+            <div class="rounded" id="placeholder-img-box" style = "width:max-content height:max-content">
                 {{!-- <div class = "recipe_image"> --}}
                 <img class = "recipe_image" {{#if this.image}}
                     src="{{this.image}}"
