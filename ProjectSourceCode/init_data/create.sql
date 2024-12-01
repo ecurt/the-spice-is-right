@@ -29,7 +29,8 @@ CREATE TABLE recipe_owners (
 DROP TABLE IF EXISTS likes CASCADE;
 CREATE TABLE likes (
   user_id INTEGER NOT NULL REFERENCES users (user_id),
-  recipe_id INTEGER NOT NULL REFERENCES recipes (recipe_id)
+  recipe_id INTEGER NOT NULL REFERENCES recipes (recipe_id),
+  UNIQUE (user_id, recipe_id)
 );
 
 DROP TABLE IF EXISTS cookbooks CASCADE;
@@ -47,7 +48,8 @@ CREATE TABLE cookbook_owners (
 DROP TABLE IF EXISTS saved_recipes CASCADE;
 CREATE TABLE saved_recipes (
   recipe_id INTEGER NOT NULL REFERENCES recipes (recipe_id),
-  cookbook_id INTEGER NOT NULL REFERENCES cookbooks (cookbook_id)
+  cookbook_id INTEGER NOT NULL REFERENCES cookbooks (cookbook_id),
+  UNIQUE (recipe_id, cookbook_id)
 );
 
 

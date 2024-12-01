@@ -451,7 +451,7 @@ app.post('/saveRecipe', auth, async (req, res) => {
     }
 
     // Add to saved_recipes table
-    await db.none('INSERT INTO saved_recipes (recipe_id, cookbook_id) VALUES ($1, $2)', [req.body.recipeID, req.body.cookbookId]);
+    await db.none('INSERT INTO saved_recipes (recipe_id, cookbook_id) VALUES ($1, $2) ON CONFLICT (recipe_id, cookbook_id) DO NOTHING;', [req.body.recipeID, req.body.cookbookId]);
 
     // Redirect
     res.redirect(`/cookbook?cookbookId=${req.body.cookbookId}`);
@@ -471,7 +471,7 @@ app.post('/likeRecipe', auth, async (req, res) => {
     const userId = req.session.user.user_id;
 
     // Add to saved_recipes table
-    await db.none('INSERT INTO likes (user_id, recipe_id) VALUES ($1, $2)', [userId, req.body.recipeId]);
+    await db.none('INSERT INTO likes (user_id, recipe_id) VALUES ($1, $2) ON CONFLICT (user_id, recipe_id) DO NOTHING;', [userId, req.body.recipeId]);
 
     // Redirect
     res.redirect('/likedRecipes');
