@@ -1,4 +1,4 @@
-# the-spice-is-right
+# The Spice is Right
 
 ## Brief Application description
 The Spice Is Right is a recipe browser which allows users to upload, save, like, and browse user created recipes.
