@@ -14,7 +14,9 @@ We will be utilizing technology learned in class. HTML, CSS, JS, Handlebars CSS,
 ## Link to the deployed application
 https://github.com/ecurt/the-spice-is-right
 
-# Update these later:
-Prerequisites to run the application - Any software that needs to be installed to run the application
-Instructions on how to run the application locally.
-How to run the tests
+# Prerequisites to run the application:
+No additional software is needed to run the application.
+
+Before running and each time you restart the application delete the database with docker compose down -v    
+
+Run the application with docker compose up
