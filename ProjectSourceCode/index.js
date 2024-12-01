@@ -188,15 +188,22 @@ app.post('/deleteRecipe', auth, async (req, res) => {
   try {
     const userId = req.session.user.user_id;
     const recipeId = req.body.recipeId;
-    const owner = await db.one(
+    await db.task(async t => {
+    const owner = await t.any(
       'SELECT recipe_id FROM recipe_owners WHERE user_id = $1 AND recipe_id = $2',
       [userId, recipeId]
     );
+
 // shouldn't ever occur since delete is on profile page, but just in case:
-    if (!owner) {
+    if (owner.length === 0) {
       return res.status(403).send('You can only delete your own recipes.');
-    }    await db.none('DELETE FROM recipe_owners WHERE recipe_id = $1', [recipeId]);
-    await db.none('DELETE FROM recipes WHERE recipe_id = $1', [recipeId]);
+    }
+      await t.none('DELETE FROM saved_recipes WHERE recipe_id = $1', [recipeId]);
+      await t.none('DELETE FROM likes WHERE recipe_id = $1', [recipeId]);
+      await t.none('DELETE FROM recipe_owners WHERE recipe_id = $1', [recipeId]);
+      await t.none('DELETE FROM recipes WHERE recipe_id = $1', [recipeId]);
+  });
+    
     res.redirect('/profile');
   } catch (error) {
     console.error('Error deleting recipe', error);
