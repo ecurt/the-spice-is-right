@@ -21,6 +21,7 @@ Docker desktop is needed to run this application.
 
 # Steps
 - cd into ProjectSourceCode
+- Create .env file (not provided here for security reasons)
 - run `docker compose up` or `docker compose up -d` to run in detached mode (Can't see console).
 - Open `localhost:3000` in a browser.
 - If ran in detached mode (-d), run `docker compose down` to stop server.

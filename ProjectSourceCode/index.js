@@ -253,7 +253,7 @@ app.post('/login', async (req, res) => {
         // Login
         req.session.user = user;
         req.session.save();
-        res.redirect('/');
+        res.redirect('/profile');
       } else {
         res.render('pages/login', { message: 'Incorrect password. Try again.', });
       }
