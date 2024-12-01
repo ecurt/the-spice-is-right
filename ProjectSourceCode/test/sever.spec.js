@@ -1,7 +1,7 @@
 // ********************** Initialize server **********************************
 
 
-const app = require('../index'); //TODO: Make sure the path to your index.js is correctly added
+const app = require('../src/index'); //TODO: Make sure the path to your index.js is correctly added
 let server;
 // ********************** Import Libraries ***********************************
 

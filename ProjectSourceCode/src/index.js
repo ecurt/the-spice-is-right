@@ -73,7 +73,7 @@ app.use(
 );
 
 // Serve static files from the "public" directory
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'resources')));
 
 // Authentication Middleware.
 const auth = (req, res, next) => {
@@ -173,7 +173,7 @@ app.get('/viewRecipe', async (req, res) => {
     recipe.ingredients = recipe.ingredients ? recipe.ingredients.split('\n'): [];
     recipe.instructions = recipe.instructions ? recipe.instructions.split('\n') : [];
     
-    // recipe.image = 'images/Fish_logo.jpg'; 
+    // recipe.image = 'img/Fish_logo.jpg'; 
     // console.log('Parsed recipe with default image:', recipe);
 
     res.render('pages/view_recipe', {
