@@ -52,7 +52,7 @@
         reader.onloadend = function() {
 
             // Check length
-            if (reader.result.length > 10000000) {
+            if (reader.result.length > 100000) {
                 alert('Image is too large, please select another image.');
             }
 
@@ -114,7 +114,7 @@
         <!-- Time (max is 24 hours)-->
         <div class="form-group">
             <label for="time">Time</label>
-            <input type="number" id="time" max="1440" name="time" placeholder="Enter time in minutes" required />
+            <input type="number" min="1" id="time" max="1440" name="time" placeholder="Enter time in minutes" required />
         </div>
 
         <button type="submit">Submit Recipe</button>
