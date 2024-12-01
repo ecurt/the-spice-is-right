@@ -12,7 +12,7 @@ Gwyn Keaty
 ## Technology Stack used for the project
 We will be utilizing technology learned in class. HTML, CSS, JS, Handlebars CSS, etc.
 ## Link to the deployed application
-https://github.com/ecurt/the-spice-is-right
+https://the-spice-is-right-r85m.onrender.com
 
 # How to run application:
 
@@ -27,9 +27,6 @@ Docker desktop is needed to run this application.
 - If ran in detached mode (-d), run `docker compose down` to stop server.
 - If ran in the foreground, stop the server with ctrl+c.
 - To restart the database, run `docker compose down -v`.
-
-## Remote link:
-`https://the-spice-is-right-r85m.onrender.com`
 
 ## Notes on testing:
 - To run the tests, change the line `command: 'npm start'` in `docker-compose.yaml` to `command: 'npm run testandrun'`. The second line is commented out to make this easy.
