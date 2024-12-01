@@ -29,7 +29,7 @@ Docker desktop is needed to run this application.
 - To restart the database, run `docker compose down -v`.
 
 ## Remote link:
-`https://the-spice-is-right.onrender.com/`
+`https://the-spice-is-right-r85m.onrender.com`
 
 ## Notes on testing:
 - To run the tests, change the line `command: 'npm start'` in `docker-compose.yaml` to `command: 'npm run testandrun'`. The second line is commented out to make this easy.
