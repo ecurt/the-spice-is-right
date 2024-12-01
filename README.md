@@ -16,5 +16,7 @@ https://github.com/ecurt/the-spice-is-right
 
 # Prerequisites to run the application:
 No additional software is needed to run the application.
+
 Before running and each time you restart the application delete the database with docker compose down -v    
+
 Run the application with docker compose up
