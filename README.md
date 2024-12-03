@@ -21,7 +21,13 @@ Docker desktop is needed to run this application.
 
 ## Steps:
 - cd into ProjectSourceCode
-- Create .env file (not provided here for security reasons)
+- Create .env file (not in repository for security reasons)
+- Paste the following into the .env file:
+<pre>POSTGRES_USER="user" <br>
+POSTGRES_PASSWORD="pwd" <br>
+POSTGRES_DB="users_db" <br>
+POSTGRES_HOST="db" <br>
+SESSION_SECRET="super duper secret!"</pre>
 - run `docker compose up` or `docker compose up -d` to run in detached mode (Can't see console).
 - Open `localhost:3000` in a browser.
 - If ran in detached mode (-d), run `docker compose down` to stop server.
