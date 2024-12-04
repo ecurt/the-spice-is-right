@@ -219,7 +219,7 @@ app.get('/addRecipe', auth, (req, res) => {
 // Search recipes
 // Expects 'search' query perameter
 app.get('/search', function (req, res) {
-  const query = 'SELECT * FROM recipes WHERE name LIKE $1';
+  const query = 'SELECT * FROM recipes WHERE name ILIKE $1';
   db.any(query, [`%${req.query.search}%`])
     .then(data => {
       const title = `Search results for \'${req.query.search}\':`;
