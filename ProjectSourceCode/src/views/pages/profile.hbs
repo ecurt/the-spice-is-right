@@ -46,7 +46,7 @@
                                     <span class="badge badge-info ml-2">Time: {{time}} mins</span>
                                 </li>
                                 </a>
-                    <form action="/deleteRecipe" method="POST" style="margin: 0;">
+                    <form action="/deleteRecipe" method="POST" class='pb-2' style="margin: 0;">
                         <input type="hidden" name="recipeId" value="{{this.recipe_id}}">
                         <button type="submit" class="btn btn-danger btn-sm">Delete Recipe</button>
                     </form>
