@@ -96,7 +96,7 @@ app.use((req, res, next) => {
 
 // Render home page when website is loaded
 app.get('/', (req, res) => {
-  const query = 'SELECT recipe_id, name, description, difficulty, time, image FROM recipes';
+  const query = 'SELECT recipe_id, name, description, difficulty, time, image FROM recipes LIMIT 12';
   db.any(query, [`%${req.query.search}%`])
     .then(data => {
       res.render('pages/recipe_results', {
