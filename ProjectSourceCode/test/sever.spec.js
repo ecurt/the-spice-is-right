@@ -1,6 +1,5 @@
 // ********************** Initialize server **********************************
 
-
 const app = require('../src/index'); //TODO: Make sure the path to your index.js is correctly added
 let server;
 // ********************** Import Libraries ***********************************
@@ -112,11 +111,33 @@ describe('Testing Add User API', () => {
     //making sure
     it('Negative : /cookbook. Checking no input', done => {
       agent
-        .post('/login')
+        .post('/cookbook')
         .send({username: "",})
         .end((err, res) => {
-          expect(res).to.have.status(400);
-          expect(res.body.message).to.equals('Invalid input');
+          expect(res).to.have.status(500);
+          expect(res.body.message).to.equals('Failed to create recipe');
+          done();
+        });
+    });
+  });
+
+  describe('Testing likeRecipe API', () => {
+    //does it work if not empty string
+    it('positive : /likeRecipe', done => {
+      agent
+        .post('/likeRecipe')
+        .send({recipeId:"1"})
+        .end((err, res) => {
+          expect(res).to.have.status(200);
+          done();
+        });
+    });
+    it('Negative : /likeRecipe. Checking no input', done => {
+      agent
+        .post('/likeRecipe')
+        .send({user_id:"", recipe_id:""})
+        .end((err, res) => {
+          expect(res).to.have.status(500);
           done();
         });
     });
@@ -144,3 +165,65 @@ describe('Testing Add User API', () => {
         });
     });
   });
+
+  describe('Testing viewRecipe API', () => {
+    it('positive : /viewRecipe', done => {
+      agent
+        .get('/viewRecipe')
+        .query({recipeId:"1"})
+        .end((err, res) => {
+          expect(res).to.have.status(200);
+          done();
+        });
+    });
+    it('negative : /viewRecipe empty value', done => {
+      agent
+        .post('/viewRecipe')
+        .query({ recipeId: '1'})
+        .end((err, res) => {
+          expect(res).to.have.status(404);
+          done();
+        });
+    });
+    it('negative : /viewRecipe no passing value', done => {
+      agent
+        .post('/viewRecipe')
+        .end((err, res) => {
+          expect(res).to.have.status(404);
+          done();
+        });
+    });
+    it('Negative : /viewRecipe. Checking invalid recipe id', done => {
+      agent
+        .post('/viewRecipe')
+        .query({ recipeId: '10000000000000000'})
+        .end((err, res) => {
+          expect(res).to.have.status(404);
+          done();
+        });
+    });
+  });
+//search positive case?
+describe('Testing search API', () => {
+  it('positive : /search', done => {
+    agent
+      .get('/search')
+      .query({ search: 'Egg'})
+      .end((err, res) => {
+        expect(res).to.have.status(200);
+        done();
+      });
+  });
+  /*
+  it('negative : /search with empty search term', done => {
+    agent
+      .get('/search')
+      .query({ search: '' }) // Empty search term
+      .end((err, res) => {
+        expect(res).to.have.status(200); // Assuming the endpoint handles this gracefully
+        expect(res.text).to.include('Search results for \'\''); // Should show an empty search results page
+        done();
+      });
+  });
+  */
+});
